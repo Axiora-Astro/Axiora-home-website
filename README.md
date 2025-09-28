@@ -1,30 +1,43 @@
-# Axiora coming soon website
+# Astro Starter Kit: Minimal
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+```sh
+npm create astro@latest -- --template minimal
+```
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/lilhuss26s-projects/v0-axiora-coming-soon-website)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/f6bMCiYylhx)
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## Overview
+## 🚀 Project Structure
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Inside of your Astro project, you'll see the following folders and files:
 
-## Deployment
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-Your project is live at:
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-**[https://vercel.com/lilhuss26s-projects/v0-axiora-coming-soon-website](https://vercel.com/lilhuss26s-projects/v0-axiora-coming-soon-website)**
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-## Build your app
+Any static assets, like images, can be placed in the `public/` directory.
 
-Continue building your app on:
+## 🧞 Commands
 
-**[https://v0.app/chat/projects/f6bMCiYylhx](https://v0.app/chat/projects/f6bMCiYylhx)**
+All commands are run from the root of the project, from a terminal:
 
-## How It Works
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

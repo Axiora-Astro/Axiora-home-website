@@ -1,0 +1,50 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section id="hero" class="relative py-20 lg:py-32 overflow-hidden">
+  <!-- Background gradient -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Text Content -->
+      <div class="text-center lg:text-left">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+          <span class="text-blue-600 dark:text-blue-400">Data Analysis</span>
+          <br>Made Simple
+        </h1>
+
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+          Axiora is a free desktop application that delivers full data analysis reports in no time,
+          no experience needed, no Internet connection, suitable for Startups, Small Business.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <a href="#trial-code" class="btn btn-primary">
+            <Icon name="tabler:code" class="w-5 h-5 mr-2" />
+            Get Trial Code
+          </a>
+          <a href="#notify-me" class="btn btn-secondary">
+            <Icon name="tabler:bell" class="w-5 h-5 mr-2" />
+            Notify Me
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Image -->
+      <div class="relative">
+        <div class="relative z-10">
+          <img
+            src="/Axiora-photos/Axiora-cover.jpeg"
+            alt="Axiora Dashboard"
+            class="w-full h-auto rounded-lg shadow-2xl"
+          />
+        </div>
+        <!-- Decorative elements -->
+        <div class="absolute -top-4 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <div class="absolute -bottom-8 -right-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
+      </div>
+    </div>
+  </div>
+</section>

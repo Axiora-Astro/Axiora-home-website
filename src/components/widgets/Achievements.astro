@@ -1,0 +1,44 @@
+---
+const achievements = [
+  {
+    title: 'Delta Tech Summit',
+    subtitle: 'First Place Winner',
+    description: 'Recognized for outstanding innovation in data analysis technology and user experience design.',
+    image: '/Axiora-photos/Our Images/DTS first place.jpg',
+  },
+  {
+    title: 'Creativa Tanta Hackathon 2.0',
+    subtitle: 'First Place Winner', 
+    description: 'Awarded for best solution in business intelligence and data visualization category.',
+    image: '/Axiora-photos/Our Images/Creativa tanta Hacathon.jpg',
+  },
+];
+---
+
+<section class="py-20 bg-white dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        Achievements
+      </h2>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        Axiora has been recognized for innovation and excellence in data analysis solutions.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      {achievements.map((achievement) => (
+        <div class="text-center">
+          <img
+            src={achievement.image}
+            alt={achievement.title}
+            class="mx-auto mb-6 rounded-lg shadow-lg max-w-md w-full h-64 object-cover"
+          />
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{achievement.title}</h3>
+          <p class="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3">{achievement.subtitle}</p>
+          <p class="text-gray-600 dark:text-gray-300">{achievement.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

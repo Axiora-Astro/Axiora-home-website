@@ -1,0 +1,98 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section id="trial-code" class="py-20 bg-blue-50 dark:bg-gray-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        Get Your Trial Code
+      </h2>
+      <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+        Enter your details below to receive a free trial code for Axiora.
+      </p>
+
+      <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8">
+        <form id="trial-form" class="space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+              Full Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              placeholder="Enter your full name"
+            />
+          </div>
+          
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 text-left">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              placeholder="Enter your email address"
+            />
+          </div>
+          
+          <button
+            type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-md transition duration-200 flex items-center justify-center"
+          >
+            <Icon name="tabler:code" class="w-5 h-5 mr-2" />
+            Generate Trial Code
+          </button>
+        </form>
+
+        <div id="trial-code-display" class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md text-center hidden">
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Your trial code:</p>
+          <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 font-mono" id="code-text">XXXX-XXXX-XXXX</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Save this code to activate your free trial!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('trial-form');
+    const codeDisplay = document.getElementById('trial-code-display');
+    const codeText = document.getElementById('code-text');
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Generate a random trial code
+        const code = generateTrialCode();
+        if (codeText) {
+          codeText.textContent = code;
+        }
+        if (codeDisplay) {
+          codeDisplay.classList.remove('hidden');
+          codeDisplay.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    function generateTrialCode() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+      for (let i = 0; i < 12; i++) {
+        if (i > 0 && i % 4 === 0) {
+          result += '-';
+        }
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+  });
+</script>

@@ -1,0 +1,114 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const steps = [
+  {
+    number: 1,
+    title: 'Download',
+    description: 'Download Axiora from our official website. Quick installation process gets you started in minutes.',
+    icon: 'tabler:download',
+  },
+  {
+    number: 2,
+    title: 'Upload your data',
+    description: 'Simply drag and drop your Excel or CSV files into Axiora. No complex setup required.',
+    icon: 'tabler:upload',
+  },
+  {
+    number: 3,
+    title: 'Add analysis context',
+    description: 'Tell Axiora what you want to discover about your data. Add context for more relevant insights.',
+    icon: 'tabler:message-circle',
+  },
+  {
+    number: 4,
+    title: 'Ready!',
+    description: 'Your comprehensive analysis report is ready. Explore, share, and make data-driven decisions.',
+    icon: 'tabler:check',
+  },
+];
+---
+
+<section class="py-20 bg-gray-900 text-white relative overflow-hidden">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 leading-tight">
+          Get your full report in no time with 
+          <span class="text-blue-400">Axiora</span>
+        </h2>
+
+        <div class="space-y-8">
+          {steps.map((step, index) => (
+            <div class="flex items-start group">
+              <!-- Step Icon/Number -->
+              <div class="flex-shrink-0 mr-6">
+                <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-200">
+                  <Icon name={step.icon} class="w-6 h-6 text-white" />
+                </div>
+                {index < steps.length - 1 && (
+                  <div class="w-0.5 h-16 bg-gray-700 ml-6 mt-4"></div>
+                )}
+              </div>
+
+              <!-- Step Content -->
+              <div class="flex-1 pb-8">
+                <h3 class="text-xl font-semibold mb-2">
+                  <span class="text-blue-400">Step {step.number}:</span> {step.title}
+                </h3>
+                <p class="text-gray-300 leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- CTA Button -->
+        <div class="mt-12">
+          <a 
+            href="#trial-code" 
+            class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200"
+          >
+            <Icon name="tabler:rocket" class="w-5 h-5 mr-2" />
+            Get Started Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Image -->
+      <div class="relative">
+        <div class="relative">
+          <!-- Clock/Time Image Placeholder -->
+          <div class="bg-gradient-to-br from-gray-700 to-gray-800 rounded-2xl p-8 shadow-2xl">
+            <img 
+              src="/Axiora-photos/Screenshots/Upload Data.png" 
+              alt="Axiora Upload Process" 
+              class="w-full h-auto rounded-lg shadow-lg"
+            />
+          </div>
+          
+          <!-- Decorative Elements -->
+          <div class="absolute -top-4 -right-4 w-24 h-24 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
+          <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-purple-500 rounded-full opacity-20 animate-pulse animation-delay-1000"></div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-8 right-8 bg-white/10 backdrop-blur-sm rounded-lg p-3">
+          <Icon name="tabler:clock" class="w-6 h-6 text-blue-400" />
+        </div>
+        
+        <div class="absolute bottom-8 left-8 bg-white/10 backdrop-blur-sm rounded-lg p-3">
+          <Icon name="tabler:chart-line" class="w-6 h-6 text-green-400" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

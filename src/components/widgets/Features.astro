@@ -1,0 +1,63 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const features = [
+  {
+    title: 'Your device, Your data',
+    description: 'Complete privacy and security with offline processing. Your sensitive data never leaves your device.',
+    icon: 'tabler:shield-check',
+  },
+  {
+    title: 'Personal Specialist',
+    description: 'Built-in AI assistant that guides you through your analysis journey like having a data scientist by your side.',
+    icon: 'tabler:user-check',
+  },
+  {
+    title: 'Maximum Speed',
+    description: 'Lightning-fast processing powered by optimized algorithms. Get results in seconds, not hours.',
+    icon: 'tabler:rocket',
+  },
+  {
+    title: 'Few clicks, full report',
+    description: 'Generate comprehensive analysis reports with just a few clicks. No complex configurations required.',
+    icon: 'tabler:click',
+  },
+  {
+    title: 'Share your insights',
+    description: 'Export and share your findings easily with interactive dashboards and professional reports.',
+    icon: 'tabler:share',
+  },
+  {
+    title: 'Go back easily',
+    description: 'Navigate through your analysis history effortlessly. Revisit previous reports and comparisons anytime.',
+    icon: 'tabler:history',
+  },
+];
+---
+
+<section class="py-20 bg-white dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        What you get with Axiora
+      </h2>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        Experience the power of effortless data analysis with features designed for everyone.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {features.map((feature) => (
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 hover:shadow-lg transition-shadow duration-300">
+          <div class="flex items-center mb-4">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg mr-4">
+              <Icon name={feature.icon} class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

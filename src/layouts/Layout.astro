@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Data Analysis Made Simple - Axiora is a free desktop application that delivers full data analysis reports in no time.' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+    <title>{title}</title>
+  </head>
+  <body class="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <slot />
+
+    <script>
+      // Dark mode toggle functionality
+      const theme = localStorage.getItem('theme') || 'light';
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </body>
+</html>
