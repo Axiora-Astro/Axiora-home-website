@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axiora - First Slide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 25%, #2563eb 50%, #1d4ed8 75%, #1e3a8a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated gradient overlay */
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(96, 165, 250, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
+            animation: gradientPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientPulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Grid pattern */
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* Main content */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Logo container */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-name {
+            font-size: 7rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.05em;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tagline */
+        .tagline {
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        /* Decorative elements */
+        .corner-decoration {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            z-index: 5;
+        }
+
+        .corner-top-left {
+            top: 20px;
+            left: 20px;
+            border-top: 3px solid rgba(255, 255, 255, 0.3);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px 0 0 0;
+        }
+
+        .corner-top-right {
+            top: 20px;
+            right: 20px;
+            border-top: 3px solid rgba(255, 255, 255, 0.3);
+            border-right: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 4px 0 0;
+        }
+
+        .corner-bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 0 4px;
+        }
+
+        .corner-bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+            border-right: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 4px 0;
+        }
+
+        /* Accent line */
+        .accent-line {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated gradient overlay -->
+    <div class="gradient-overlay"></div>
+    
+    <!-- Grid overlay -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Corner decorations -->
+    <div class="corner-decoration corner-top-left"></div>
+    <div class="corner-decoration corner-top-right"></div>
+    <div class="corner-decoration corner-bottom-left"></div>
+    <div class="corner-decoration corner-bottom-right"></div>
+    
+    <!-- Main content -->
+    <div class="content">
+        <div class="logo-container">
+            <img src="public/logo.jpg" alt="Axiora Logo" class="logo-icon">
+            <h1 class="brand-name">Axiora</h1>
+        </div>
+        
+        <p class="tagline">Data Analysis Made Simple</p>
+    </div>
+
+    <!-- Accent line -->
+    <div class="accent-line"></div>
+</body>
+</html>
