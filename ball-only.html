@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Ball Only</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Gradient ball */
+        .gradient-ball {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, 
+                #60a5fa 0%,
+                #818cf8 25%,
+                #a78bfa 50%,
+                #c084fc 75%,
+                #e879f9 100%
+            );
+            box-shadow: 
+                0 0 40px rgba(96, 165, 250, 0.4),
+                0 0 80px rgba(129, 140, 248, 0.3),
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 -20px 40px rgba(255, 255, 255, 0.2),
+                inset 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        /* Shine effect on ball */
+        .gradient-ball::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 15%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-ball"></div>
+</body>
+</html>
