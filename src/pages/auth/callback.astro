@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Layout title="Authentication - Axiora">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+    <div class="max-w-md mx-auto text-center px-4">
+      <div id="loading" class="mb-8">
+        <div class="bg-blue-100 dark:bg-blue-900 p-4 rounded-full inline-block mb-4 animate-pulse">
+          <Icon name="tabler:loader-2" class="w-16 h-16 text-blue-600 dark:text-blue-400 animate-spin" />
+        </div>
+        
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          Completing Sign In...
+        </h1>
+        
+        <p class="text-lg text-gray-600 dark:text-gray-300">
+          Please wait while we authenticate your account.
+        </p>
+      </div>
+
+      <div id="error" class="hidden">
+        <div class="bg-red-100 dark:bg-red-900 p-4 rounded-full inline-block mb-4">
+          <Icon name="tabler:alert-circle" class="w-16 h-16 text-red-600 dark:text-red-400" />
+        </div>
+        
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          Authentication Failed
+        </h1>
+        
+        <p id="error-message" class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Something went wrong during authentication.
+        </p>
+
+        <a
+          href="/"
+          class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-200"
+        >
+          <Icon name="tabler:home" class="w-5 h-5 mr-2" />
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const API_URL = 'http://localhost:4412';
+
+  async function handleCallback() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    const errorDescription = urlParams.get('error_description');
+
+    const loadingDiv = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+    const errorMessage = document.getElementById('error-message');
+
+    if (error) {
+      loadingDiv?.classList.add('hidden');
+      errorDiv?.classList.remove('hidden');
+      if (errorMessage) {
+        errorMessage.textContent = errorDescription || 'Authentication was cancelled or failed.';
+      }
+      return;
+    }
+
+    if (!code) {
+      loadingDiv?.classList.add('hidden');
+      errorDiv?.classList.remove('hidden');
+      if (errorMessage) {
+        errorMessage.textContent = 'No authorization code received.';
+      }
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/v1/auth/google/callback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store tokens
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        // Redirect to home
+        window.location.href = '/';
+      } else {
+        loadingDiv?.classList.add('hidden');
+        errorDiv?.classList.remove('hidden');
+        if (errorMessage) {
+          errorMessage.textContent = data.detail || 'Failed to complete authentication.';
+        }
+      }
+    } catch (error) {
+      loadingDiv?.classList.add('hidden');
+      errorDiv?.classList.remove('hidden');
+      if (errorMessage) {
+        errorMessage.textContent = 'Network error. Please try again.';
+      }
+    }
+  }
+
+  // Run callback handler when page loads
+  handleCallback();
+</script>

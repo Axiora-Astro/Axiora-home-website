@@ -21,6 +21,7 @@ export default defineConfig({
           'voice-presentation',
           'survey',
           'idea',
+          'google',
         ],
       },
     }),
