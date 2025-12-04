@@ -46,7 +46,7 @@ import { Icon } from 'astro-icon/components';
 </Layout>
 
 <script>
-  const API_URL = 'http://localhost:4412';
+  const API_URL = import.meta.env.PUBLIC_API_URL || 'https://axiora-backend-production.up.railway.app';
 
   async function handleCallback() {
     const urlParams = new URLSearchParams(window.location.search);
