@@ -46,65 +46,74 @@ import { Icon } from 'astro-icon/components';
 </Layout>
 
 <script>
-  const API_URL = import.meta.env.PUBLIC_API_URL || 'https://axiora-backend-production.up.railway.app';
-
   async function handleCallback() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const error = urlParams.get('error');
-    const errorDescription = urlParams.get('error_description');
-
     const loadingDiv = document.getElementById('loading');
     const errorDiv = document.getElementById('error');
     const errorMessage = document.getElementById('error-message');
 
-    if (error) {
-      loadingDiv?.classList.add('hidden');
-      errorDiv?.classList.remove('hidden');
-      if (errorMessage) {
-        errorMessage.textContent = errorDescription || 'Authentication was cancelled or failed.';
-      }
-      return;
-    }
-
-    if (!code) {
-      loadingDiv?.classList.add('hidden');
-      errorDiv?.classList.remove('hidden');
-      if (errorMessage) {
-        errorMessage.textContent = 'No authorization code received.';
-      }
-      return;
-    }
-
     try {
-      const response = await fetch(`${API_URL}/api/v1/auth/google/callback`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code })
-      });
+      // Import Supabase client
+      const { supabase } = await import('../../lib/supabase');
 
-      const data = await response.json();
+      // Check for error in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      const errorDescription = urlParams.get('error_description');
 
-      if (response.ok) {
-        // Store tokens
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+      if (error) {
+        loadingDiv?.classList.add('hidden');
+        errorDiv?.classList.remove('hidden');
+        if (errorMessage) {
+          errorMessage.textContent = errorDescription || 'Authentication was cancelled or failed.';
+        }
+        return;
+      }
+
+      // Get the session from Supabase (it handles the OAuth callback automatically)
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        loadingDiv?.classList.add('hidden');
+        errorDiv?.classList.remove('hidden');
+        if (errorMessage) {
+          errorMessage.textContent = 'Failed to get session: ' + sessionError.message;
+        }
+        return;
+      }
+
+      if (session) {
+        // Store tokens in localStorage
+        localStorage.setItem('access_token', session.access_token);
+        localStorage.setItem('refresh_token', session.refresh_token);
+        localStorage.setItem('user', JSON.stringify(session.user));
 
         // Redirect to home
         window.location.href = '/';
       } else {
-        loadingDiv?.classList.add('hidden');
-        errorDiv?.classList.remove('hidden');
-        if (errorMessage) {
-          errorMessage.textContent = data.detail || 'Failed to complete authentication.';
-        }
+        // No session found, might still be processing
+        // Wait a bit and try again
+        setTimeout(async () => {
+          const { data: { session: retrySession } } = await supabase.auth.getSession();
+          
+          if (retrySession) {
+            localStorage.setItem('access_token', retrySession.access_token);
+            localStorage.setItem('refresh_token', retrySession.refresh_token);
+            localStorage.setItem('user', JSON.stringify(retrySession.user));
+            window.location.href = '/';
+          } else {
+            loadingDiv?.classList.add('hidden');
+            errorDiv?.classList.remove('hidden');
+            if (errorMessage) {
+              errorMessage.textContent = 'No session found. Please try again.';
+            }
+          }
+        }, 1000);
       }
     } catch (error) {
       loadingDiv?.classList.add('hidden');
       errorDiv?.classList.remove('hidden');
       if (errorMessage) {
-        errorMessage.textContent = 'Network error. Please try again.';
+        errorMessage.textContent = 'An error occurred: ' + (error as Error).message;
       }
     }
   }

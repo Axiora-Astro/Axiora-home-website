@@ -387,22 +387,23 @@ import { Icon } from 'astro-icon/components';
     }
   });
 
-  // Google Sign In
+  // Google Sign In (Client-side with Supabase)
   document.getElementById('google-signin-btn')?.addEventListener('click', async () => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/auth/google/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ redirect_url: window.location.origin + '/auth/callback' })
+      // Import Supabase client dynamically
+      const { supabase } = await import('../lib/supabase');
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/auth/callback'
+        }
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        window.location.href = data.url;
-      } else {
-        showMessage('Google sign in failed', true);
+      if (error) {
+        showMessage('Google sign in failed: ' + error.message, true);
       }
+      // If successful, user will be redirected to Google
     } catch (error) {
       showMessage('Network error. Please try again.', true);
     }
@@ -411,19 +412,20 @@ import { Icon } from 'astro-icon/components';
   // Google Sign Up (same as sign in for OAuth)
   document.getElementById('google-signup-btn')?.addEventListener('click', async () => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/auth/google/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ redirect_url: window.location.origin + '/auth/callback' })
+      // Import Supabase client dynamically
+      const { supabase } = await import('../lib/supabase');
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/auth/callback'
+        }
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        window.location.href = data.url;
-      } else {
-        showMessage('Google sign up failed', true);
+      if (error) {
+        showMessage('Google sign up failed: ' + error.message, true);
       }
+      // If successful, user will be redirected to Google
     } catch (error) {
       showMessage('Network error. Please try again.', true);
     }
