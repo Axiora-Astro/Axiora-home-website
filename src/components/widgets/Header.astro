@@ -42,7 +42,7 @@ import { Icon } from 'astro-icon/components';
         </button>
         
         <!-- Logout Button (Hidden by default) -->
-        <button id="logout-btn" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex items-center gap-2 text-red-600 dark:text-red-400">
+        <button id="logout-btn" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 items-center gap-2 text-red-600 dark:text-red-400">
           <Icon name="tabler:logout" class="w-5 h-5" />
           <span class="text-sm font-medium">Logout</span>
         </button>
@@ -254,7 +254,13 @@ import { Icon } from 'astro-icon/components';
     
     if (isLoggedIn()) {
       const user = getCurrentUser();
-      const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+      
+      // Get display name with priority: display_name > full_name (Google) > name > email username
+      const displayName = user?.user_metadata?.display_name 
+        || user?.user_metadata?.full_name 
+        || user?.user_metadata?.name
+        || user?.email?.split('@')[0] 
+        || 'User';
       
       // Show user name and logout button
       const userDisplayName = document.getElementById('user-display-name');
@@ -267,6 +273,7 @@ import { Icon } from 'astro-icon/components';
       
       if (logoutBtn) {
         logoutBtn.classList.remove('hidden');
+        logoutBtn.classList.add('md:flex'); // Show as flex on medium screens and up
       }
       
       // Change user menu toggle behavior - don't open modal when logged in
