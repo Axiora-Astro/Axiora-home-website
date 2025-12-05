@@ -82,10 +82,9 @@ import { Icon } from 'astro-icon/components';
       }
 
       if (session) {
-        // Store tokens in localStorage
-        localStorage.setItem('access_token', session.access_token);
-        localStorage.setItem('refresh_token', session.refresh_token);
-        localStorage.setItem('user', JSON.stringify(session.user));
+        // Store session using auth utility
+        const { saveSession } = await import('../../lib/auth');
+        saveSession(session.access_token, session.refresh_token, session.user);
 
         // Redirect to home
         window.location.href = '/';
@@ -96,9 +95,8 @@ import { Icon } from 'astro-icon/components';
           const { data: { session: retrySession } } = await supabase.auth.getSession();
           
           if (retrySession) {
-            localStorage.setItem('access_token', retrySession.access_token);
-            localStorage.setItem('refresh_token', retrySession.refresh_token);
-            localStorage.setItem('user', JSON.stringify(retrySession.user));
+            const { saveSession } = await import('../../lib/auth');
+            saveSession(retrySession.access_token, retrySession.refresh_token, retrySession.user);
             window.location.href = '/';
           } else {
             loadingDiv?.classList.add('hidden');

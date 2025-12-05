@@ -35,9 +35,16 @@ import { Icon } from 'astro-icon/components';
           <Icon name="tabler:moon" class="w-5 h-5 hidden dark:block" />
         </button>
 
-        <!-- User Icon -->
-        <button id="user-menu-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hidden md:block">
+        <!-- User Menu (Not Logged In) -->
+        <button id="user-menu-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hidden md:flex items-center gap-2">
           <Icon name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+          <span id="user-display-name" class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden"></span>
+        </button>
+        
+        <!-- Logout Button (Hidden by default) -->
+        <button id="logout-btn" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex items-center gap-2 text-red-600 dark:text-red-400">
+          <Icon name="tabler:logout" class="w-5 h-5" />
+          <span class="text-sm font-medium">Logout</span>
         </button>
 
         <a href="/coming-soon" class="btn btn-secondary hidden md:inline-block">Download</a>
@@ -241,6 +248,45 @@ import { Icon } from 'astro-icon/components';
     }
   });
 
+  // Check if user is logged in on page load
+  async function checkLoginStatus() {
+    const { getCurrentUser, isLoggedIn } = await import('../../lib/auth');
+    
+    if (isLoggedIn()) {
+      const user = getCurrentUser();
+      const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+      
+      // Show user name and logout button
+      const userDisplayName = document.getElementById('user-display-name');
+      const logoutBtn = document.getElementById('logout-btn');
+      
+      if (userDisplayName) {
+        userDisplayName.textContent = displayName;
+        userDisplayName.classList.remove('hidden');
+      }
+      
+      if (logoutBtn) {
+        logoutBtn.classList.remove('hidden');
+      }
+      
+      // Change user menu toggle behavior - don't open modal when logged in
+      const userMenuToggle = document.getElementById('user-menu-toggle');
+      if (userMenuToggle) {
+        userMenuToggle.style.cursor = 'default';
+        userMenuToggle.onclick = null; // Remove click handler
+      }
+    }
+  }
+  
+  // Run on page load
+  checkLoginStatus();
+  
+  // Logout functionality
+  document.getElementById('logout-btn')?.addEventListener('click', async () => {
+    const { signOut } = await import('../../lib/auth');
+    await signOut();
+  });
+
   // Mobile menu toggle
   document.getElementById('mobile-menu-toggle')?.addEventListener('click', () => {
     const menu = document.getElementById('mobile-menu');
@@ -256,10 +302,13 @@ import { Icon } from 'astro-icon/components';
   const signinForm = document.getElementById('signin-form');
   const signupForm = document.getElementById('signup-form');
 
-  // Open modal
-  userMenuToggle?.addEventListener('click', () => {
-    modal?.classList.remove('hidden');
-    modal?.classList.add('flex');
+  // Open modal (only if not logged in)
+  userMenuToggle?.addEventListener('click', async () => {
+    const { isLoggedIn } = await import('../../lib/auth');
+    if (!isLoggedIn()) {
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
+    }
   });
 
   // Close modal
@@ -342,9 +391,8 @@ import { Icon } from 'astro-icon/components';
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        const { saveSession } = await import('../../lib/auth');
+        saveSession(data.access_token, data.refresh_token, data.user);
         showMessage('Successfully signed in!');
         
         setTimeout(() => {
@@ -384,10 +432,10 @@ import { Icon } from 'astro-icon/components';
       const data = await response.json();
 
       if (response.ok) {
+        const { saveSession } = await import('../../lib/auth');
+        
         if (data.email_confirmed) {
-          localStorage.setItem('access_token', data.access_token);
-          localStorage.setItem('refresh_token', data.refresh_token);
-          localStorage.setItem('user', JSON.stringify(data.user));
+          saveSession(data.access_token, data.refresh_token, data.user);
           showMessage('Account created successfully!');
           
           setTimeout(() => {
