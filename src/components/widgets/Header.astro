@@ -245,21 +245,17 @@ import { Icon } from 'astro-icon/components';
       const decodedCallback = decodeURIComponent(desktopCallback);
       localStorage.setItem('desktop_callback', decodedCallback);
       
-      // Check if user is already logged in
-      const { isLoggedIn, getCurrentUser } = await import('../../lib/auth');
+      // Check if user is already logged in by checking Supabase session directly
+      const { supabase } = await import('../../lib/supabase');
+      const { data: { session } } = await supabase.auth.getSession();
       
-      if (isLoggedIn()) {
+      if (session && session.access_token) {
         // User is already logged in - redirect directly to backend callback
-        const { supabase } = await import('../../lib/supabase');
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session) {
-          const accessToken = session.access_token;
-          const callbackUrl = `${decodedCallback}&access_token=${accessToken}`;
-          localStorage.removeItem('desktop_callback');
-          window.location.href = callbackUrl;
-          return; // Stop here, don't open modal
-        }
+        const accessToken = session.access_token;
+        const callbackUrl = `${decodedCallback}&access_token=${accessToken}`;
+        localStorage.removeItem('desktop_callback');
+        window.location.href = callbackUrl;
+        return; // Stop here, don't open modal
       }
       
       // User not logged in - open login modal
