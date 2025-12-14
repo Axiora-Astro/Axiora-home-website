@@ -245,18 +245,31 @@ import { Icon } from 'astro-icon/components';
       const decodedCallback = decodeURIComponent(desktopCallback);
       localStorage.setItem('desktop_callback', decodedCallback);
       
-      // Wait a bit for page to fully load and Supabase to initialize
+      // Wait a bit for page to fully load
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Check if user is already logged in by checking Supabase session directly
+      // Check localStorage first (faster and more reliable for our use case)
+      const localAccessToken = localStorage.getItem('access_token');
+      console.log('Desktop login check - localStorage token:', !!localAccessToken);
+      
+      if (localAccessToken) {
+        // User is already logged in (has token in localStorage) - redirect directly
+        console.log('User already logged in (localStorage), redirecting to backend...');
+        const callbackUrl = `${decodedCallback}&access_token=${localAccessToken}`;
+        localStorage.removeItem('desktop_callback');
+        window.location.href = callbackUrl;
+        return; // Stop here, don't open modal
+      }
+      
+      // Also check Supabase session as fallback
       const { supabase } = await import('../../lib/supabase');
       const { data: { session }, error } = await supabase.auth.getSession();
       
-      console.log('Desktop login check:', { hasSession: !!session, hasToken: !!session?.access_token, error });
+      console.log('Desktop login check - Supabase session:', { hasSession: !!session, hasToken: !!session?.access_token, error });
       
       if (session && session.access_token) {
-        // User is already logged in - redirect directly to backend callback
-        console.log('User already logged in, redirecting to backend...');
+        // User is logged in via Supabase - redirect directly
+        console.log('User already logged in (Supabase), redirecting to backend...');
         const accessToken = session.access_token;
         const callbackUrl = `${decodedCallback}&access_token=${accessToken}`;
         localStorage.removeItem('desktop_callback');
