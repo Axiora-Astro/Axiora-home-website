@@ -241,8 +241,9 @@ import { Icon } from 'astro-icon/components';
     const desktopCallback = urlParams.get('desktop_callback');
     
     if (isDesktopLogin && desktopCallback) {
-      // Store desktop callback for later use
-      localStorage.setItem('desktop_callback', desktopCallback);
+      // Decode and store desktop callback for later use
+      const decodedCallback = decodeURIComponent(desktopCallback);
+      localStorage.setItem('desktop_callback', decodedCallback);
       
       // Check if user is already logged in
       const { isLoggedIn, getCurrentUser } = await import('../../lib/auth');
@@ -254,7 +255,7 @@ import { Icon } from 'astro-icon/components';
         
         if (session) {
           const accessToken = session.access_token;
-          const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+          const callbackUrl = `${decodedCallback}&access_token=${accessToken}`;
           localStorage.removeItem('desktop_callback');
           window.location.href = callbackUrl;
           return; // Stop here, don't open modal
@@ -454,7 +455,7 @@ import { Icon } from 'astro-icon/components';
         if (desktopCallback) {
           // Desktop app login - redirect to backend callback
           const accessToken = data.access_token;
-          const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+          const callbackUrl = `${desktopCallback}&access_token=${accessToken}`;
           localStorage.removeItem('desktop_callback');
           window.location.href = callbackUrl;
         } else {
@@ -509,7 +510,7 @@ import { Icon } from 'astro-icon/components';
           if (desktopCallback) {
             // Desktop app login - redirect to backend callback
             const accessToken = data.access_token;
-            const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+            const callbackUrl = `${desktopCallback}&access_token=${accessToken}`;
             localStorage.removeItem('desktop_callback');
             window.location.href = callbackUrl;
           } else {

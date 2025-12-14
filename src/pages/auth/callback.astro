@@ -92,7 +92,7 @@ import { Icon } from 'astro-icon/components';
         if (desktopCallback) {
           // Desktop app login - redirect to backend callback with access token
           const accessToken = session.access_token;
-          const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+          const callbackUrl = `${desktopCallback}&access_token=${accessToken}`;
           
           // Clear stored callback
           localStorage.removeItem('desktop_callback');
@@ -117,7 +117,7 @@ import { Icon } from 'astro-icon/components';
             const desktopCallback = localStorage.getItem('desktop_callback');
             if (desktopCallback) {
               const accessToken = retrySession.access_token;
-              const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+              const callbackUrl = `${desktopCallback}&access_token=${accessToken}`;
               localStorage.removeItem('desktop_callback');
               window.location.href = callbackUrl;
             } else {
