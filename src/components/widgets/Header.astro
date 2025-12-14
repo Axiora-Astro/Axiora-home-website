@@ -235,7 +235,7 @@ import { Icon } from 'astro-icon/components';
 
 <script>
   // Desktop Login Detection
-  (function() {
+  (async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const isDesktopLogin = urlParams.get('desktop_login') === 'true';
     const desktopCallback = urlParams.get('desktop_callback');
@@ -244,7 +244,24 @@ import { Icon } from 'astro-icon/components';
       // Store desktop callback for later use
       localStorage.setItem('desktop_callback', desktopCallback);
       
-      // Automatically open login modal
+      // Check if user is already logged in
+      const { isLoggedIn, getCurrentUser } = await import('../../lib/auth');
+      
+      if (isLoggedIn()) {
+        // User is already logged in - redirect directly to backend callback
+        const { supabase } = await import('../../lib/supabase');
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+          const accessToken = session.access_token;
+          const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+          localStorage.removeItem('desktop_callback');
+          window.location.href = callbackUrl;
+          return; // Stop here, don't open modal
+        }
+      }
+      
+      // User not logged in - open login modal
       const modal = document.getElementById('login-modal');
       if (modal) {
         modal.classList.remove('hidden');
@@ -431,11 +448,23 @@ import { Icon } from 'astro-icon/components';
         saveSession(data.access_token, data.refresh_token, data.user);
         showMessage('Successfully signed in!');
         
-        setTimeout(() => {
-          modal?.classList.add('hidden');
-          modal?.classList.remove('flex');
-          window.location.reload(); // Reload to update UI
-        }, 1500);
+        // Check if this is a desktop login
+        const desktopCallback = localStorage.getItem('desktop_callback');
+        
+        if (desktopCallback) {
+          // Desktop app login - redirect to backend callback
+          const accessToken = data.access_token;
+          const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+          localStorage.removeItem('desktop_callback');
+          window.location.href = callbackUrl;
+        } else {
+          // Normal website login - reload page
+          setTimeout(() => {
+            modal?.classList.add('hidden');
+            modal?.classList.remove('flex');
+            window.location.reload();
+          }, 1500);
+        }
       } else {
         showMessage(data.detail || 'Sign in failed', true);
       }
@@ -474,11 +503,23 @@ import { Icon } from 'astro-icon/components';
           saveSession(data.access_token, data.refresh_token, data.user);
           showMessage('Account created successfully!');
           
-          setTimeout(() => {
-            modal?.classList.add('hidden');
-            modal?.classList.remove('flex');
-            window.location.reload();
-          }, 1500);
+          // Check if this is a desktop login
+          const desktopCallback = localStorage.getItem('desktop_callback');
+          
+          if (desktopCallback) {
+            // Desktop app login - redirect to backend callback
+            const accessToken = data.access_token;
+            const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+            localStorage.removeItem('desktop_callback');
+            window.location.href = callbackUrl;
+          } else {
+            // Normal website signup - reload page
+            setTimeout(() => {
+              modal?.classList.add('hidden');
+              modal?.classList.remove('flex');
+              window.location.reload();
+            }, 1500);
+          }
         } else {
           showMessage('Account created! Please check your email to verify your account.');
           form.reset();
