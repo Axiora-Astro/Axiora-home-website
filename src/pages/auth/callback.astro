@@ -86,8 +86,23 @@ import { Icon } from 'astro-icon/components';
         const { saveSession } = await import('../../lib/auth');
         saveSession(session.access_token, session.refresh_token, session.user);
 
-        // Redirect to home
-        window.location.href = '/';
+        // Check if this is a desktop login
+        const desktopCallback = localStorage.getItem('desktop_callback');
+        
+        if (desktopCallback) {
+          // Desktop app login - redirect to backend callback with access token
+          const accessToken = session.access_token;
+          const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+          
+          // Clear stored callback
+          localStorage.removeItem('desktop_callback');
+          
+          // Redirect to backend (will show success page and complete desktop login)
+          window.location.href = callbackUrl;
+        } else {
+          // Normal website login - redirect to home
+          window.location.href = '/';
+        }
       } else {
         // No session found, might still be processing
         // Wait a bit and try again
@@ -97,7 +112,17 @@ import { Icon } from 'astro-icon/components';
           if (retrySession) {
             const { saveSession } = await import('../../lib/auth');
             saveSession(retrySession.access_token, retrySession.refresh_token, retrySession.user);
-            window.location.href = '/';
+            
+            // Check for desktop callback again
+            const desktopCallback = localStorage.getItem('desktop_callback');
+            if (desktopCallback) {
+              const accessToken = retrySession.access_token;
+              const callbackUrl = `${desktopCallback}&access_token=${encodeURIComponent(accessToken)}`;
+              localStorage.removeItem('desktop_callback');
+              window.location.href = callbackUrl;
+            } else {
+              window.location.href = '/';
+            }
           } else {
             loadingDiv?.classList.add('hidden');
             errorDiv?.classList.remove('hidden');

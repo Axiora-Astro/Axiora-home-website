@@ -234,6 +234,35 @@ import { Icon } from 'astro-icon/components';
 </div>
 
 <script>
+  // Desktop Login Detection
+  (function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isDesktopLogin = urlParams.get('desktop_login') === 'true';
+    const desktopCallback = urlParams.get('desktop_callback');
+    
+    if (isDesktopLogin && desktopCallback) {
+      // Store desktop callback for later use
+      localStorage.setItem('desktop_callback', desktopCallback);
+      
+      // Automatically open login modal
+      const modal = document.getElementById('login-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+      
+      // Update modal header to show desktop login message
+      const modalHeader = modal?.querySelector('h2');
+      if (modalHeader) {
+        modalHeader.textContent = '🖥️ Desktop App Login';
+      }
+      const modalSubtext = modal?.querySelector('p');
+      if (modalSubtext) {
+        modalSubtext.textContent = 'Sign in to connect your Axiora Desktop App';
+      }
+    }
+  })();
+
   // Theme toggle
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const html = document.documentElement;
