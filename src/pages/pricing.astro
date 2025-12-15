@@ -74,6 +74,17 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
         'Export to multiple formats',
         'API access'
       ],
+      business: [
+        'Business-grade analysis',
+        '5,000 API calls per month',
+        'Custom report templates',
+        'Priority support',
+        'Advanced analytics',
+        'Multiple exports',
+        'Full API access',
+        'Team collaboration',
+        'Custom branding'
+      ],
       enterprise: [
         'Enterprise-grade analysis',
         '10,000 API calls per month',
@@ -94,6 +105,9 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
         'Custom development'
       ]
     };
+
+    // Plan order for display
+    const planOrder = ['free', 'pro', 'business', 'enterprise'];
 
     // Calculate discounted price
     function getDiscountedPrice(cost, discount) {
@@ -226,8 +240,18 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
           throw new Error(`HTTP ${response.status}: ${await response.text()}`);
         }
         
-        const plans = await response.json();
+        let plans = await response.json();
         console.log('Plans fetched:', plans);
+        
+        // Filter out developing plan
+        plans = plans.filter(plan => plan.type !== 'developing');
+        
+        // Sort plans by the defined order
+        plans.sort((a, b) => {
+          const orderA = planOrder.indexOf(a.type);
+          const orderB = planOrder.indexOf(b.type);
+          return orderA - orderB;
+        });
         
         if (plans.length === 0) {
           throw new Error('No subscription plans available');
