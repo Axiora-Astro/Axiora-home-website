@@ -43,11 +43,25 @@ import { Icon } from 'astro-icon/components';
         </button>
         
         <!-- User Profile (Hidden by default, shown when logged in) -->
-        <button id="user-profile" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex flex-col items-center gap-1">
-          <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
-          <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" />
-          <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200"></span>
-        </button>
+        <div class="relative hidden md:block" id="user-profile-container">
+          <button id="user-profile" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex flex-col items-center gap-1">
+            <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+            <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" />
+            <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200"></span>
+          </button>
+          
+          <!-- User Dropdown Menu -->
+          <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg hidden z-50 border border-gray-200 dark:border-gray-700">
+            <button id="edit-profile-btn" class="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2">
+              <Icon name="tabler:user-edit" class="w-4 h-4" />
+              Edit Profile
+            </button>
+            <button id="see-usage-btn" class="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2">
+              <Icon name="tabler:chart-bar" class="w-4 h-4" />
+              See Usage
+            </button>
+          </div>
+        </div>
         
         <!-- Logout Button (Hidden by default, shown when logged in) -->
         <button id="logout-btn" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 items-center gap-2 text-red-600 dark:text-red-400">
@@ -77,6 +91,70 @@ import { Icon } from 'astro-icon/components';
     </div>
   </div>
 </header>
+
+<!-- Edit Profile Modal -->
+<div id="edit-profile-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative">
+    <!-- Close Button -->
+    <button id="close-edit-profile" class="absolute top-4 right-4 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+      <Icon name="tabler:x" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+    </button>
+
+    <!-- Modal Header -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit profile</h2>
+    </div>
+
+    <!-- Profile Image -->
+    <div class="flex justify-center mb-6">
+      <div class="relative">
+        <img id="edit-avatar-preview" src="" alt="Profile" class="w-32 h-32 rounded-full border-4 border-white dark:border-gray-700 shadow-lg" />
+        <button id="change-avatar-btn" class="absolute bottom-0 right-0 p-2 bg-gray-800 dark:bg-gray-600 rounded-full hover:bg-gray-700 dark:hover:bg-gray-500 transition">
+          <Icon name="tabler:camera" class="w-5 h-5 text-white" />
+        </button>
+        <input type="file" id="avatar-upload" accept="image/*" class="hidden" />
+      </div>
+    </div>
+
+    <!-- Edit Form -->
+    <form id="edit-profile-form" class="space-y-4">
+      <div>
+        <label for="edit-display-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Display name
+        </label>
+        <input
+          type="text"
+          id="edit-display-name"
+          name="display_name"
+          required
+          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+          placeholder="Your name"
+        />
+      </div>
+      
+      <div class="flex gap-3 pt-4">
+        <button
+          type="button"
+          id="cancel-edit-profile"
+          class="flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-md transition duration-200"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+
+    <!-- Success/Error Messages -->
+    <div id="edit-profile-message" class="mt-4 p-3 rounded-md hidden">
+      <p id="edit-profile-message-text" class="text-sm"></p>
+    </div>
+  </div>
+</div>
 
 <!-- Login Modal -->
 <div id="login-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -388,6 +466,170 @@ import { Icon } from 'astro-icon/components';
   // Run on page load
   checkLoginStatus();
   
+  // User profile dropdown toggle
+  const userProfile = document.getElementById('user-profile');
+  const userDropdown = document.getElementById('user-dropdown');
+  
+  userProfile?.addEventListener('click', () => {
+    userDropdown?.classList.toggle('hidden');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!userProfile?.contains(e.target) && !userDropdown?.contains(e.target)) {
+      userDropdown?.classList.add('hidden');
+    }
+  });
+
+  // Edit Profile Modal
+  const editProfileModal = document.getElementById('edit-profile-modal');
+  const editProfileBtn = document.getElementById('edit-profile-btn');
+  const closeEditProfile = document.getElementById('close-edit-profile');
+  const cancelEditProfile = document.getElementById('cancel-edit-profile');
+  const editProfileForm = document.getElementById('edit-profile-form');
+  const editDisplayName = document.getElementById('edit-display-name');
+  const editAvatarPreview = document.getElementById('edit-avatar-preview');
+  const changeAvatarBtn = document.getElementById('change-avatar-btn');
+  const avatarUpload = document.getElementById('avatar-upload');
+  const editProfileMessage = document.getElementById('edit-profile-message');
+  const editProfileMessageText = document.getElementById('edit-profile-message-text');
+
+  let selectedAvatarFile = null;
+
+  // Open edit profile modal
+  editProfileBtn?.addEventListener('click', async () => {
+    const { getCurrentUser } = await import('../../lib/auth');
+    const user = getCurrentUser();
+    
+    if (user) {
+      // Pre-fill form with current user data
+      const displayName = user?.user_metadata?.display_name 
+        || user?.user_metadata?.full_name 
+        || user?.user_metadata?.name
+        || user?.email?.split('@')[0] 
+        || '';
+      
+      const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || '';
+      
+      if (editDisplayName) editDisplayName.value = displayName;
+      if (editAvatarPreview) editAvatarPreview.src = avatarUrl || '/default-avatar.png';
+      
+      userDropdown?.classList.add('hidden');
+      editProfileModal?.classList.remove('hidden');
+      editProfileModal?.classList.add('flex');
+    }
+  });
+
+  // Close edit profile modal
+  closeEditProfile?.addEventListener('click', () => {
+    editProfileModal?.classList.add('hidden');
+    editProfileModal?.classList.remove('flex');
+    selectedAvatarFile = null;
+  });
+
+  cancelEditProfile?.addEventListener('click', () => {
+    editProfileModal?.classList.add('hidden');
+    editProfileModal?.classList.remove('flex');
+    selectedAvatarFile = null;
+  });
+
+  // Close modal on outside click
+  editProfileModal?.addEventListener('click', (e) => {
+    if (e.target === editProfileModal) {
+      editProfileModal.classList.add('hidden');
+      editProfileModal.classList.remove('flex');
+      selectedAvatarFile = null;
+    }
+  });
+
+  // Handle avatar upload
+  changeAvatarBtn?.addEventListener('click', () => {
+    avatarUpload?.click();
+  });
+
+  avatarUpload?.addEventListener('change', (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      selectedAvatarFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (editAvatarPreview) {
+          editAvatarPreview.src = e.target?.result;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Handle form submission
+  editProfileForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const displayName = editDisplayName?.value;
+    if (!displayName) return;
+
+    try {
+      const { getCurrentUser } = await import('../../lib/auth');
+      const user = getCurrentUser();
+      
+      if (!user) {
+        throw new Error('User not logged in');
+      }
+
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
+        throw new Error('No access token found');
+      }
+
+      // Prepare form data
+      const formData = new FormData();
+      formData.append('display_name', displayName);
+      if (selectedAvatarFile) {
+        formData.append('avatar', selectedAvatarFile);
+      }
+
+      // Send update request to backend
+      const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/auth/update-profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      const data = await response.json();
+      
+      // Update localStorage with new user data
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      // Show success message
+      if (editProfileMessage && editProfileMessageText) {
+        editProfileMessage.classList.remove('hidden', 'bg-red-100', 'text-red-700');
+        editProfileMessage.classList.add('bg-green-100', 'text-green-700');
+        editProfileMessageText.textContent = 'Profile updated successfully!';
+      }
+
+      // Refresh the page after a short delay
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      
+      // Show error message
+      if (editProfileMessage && editProfileMessageText) {
+        editProfileMessage.classList.remove('hidden', 'bg-green-100', 'text-green-700');
+        editProfileMessage.classList.add('bg-red-100', 'text-red-700');
+        editProfileMessageText.textContent = error.message || 'Failed to update profile';
+      }
+    }
+  });
+
   // Logout functionality
   document.getElementById('logout-btn')?.addEventListener('click', async () => {
     const { signOut } = await import('../../lib/auth');
