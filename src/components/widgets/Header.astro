@@ -458,7 +458,10 @@ import { Icon } from 'astro-icon/components';
           
           if (response.ok) {
             const profileData = await response.json();
+            console.log('Profile Data:', profileData);
+            console.log('Subscription:', profileData?.subscription);
             const planType = profileData?.subscription?.plan_type || 'free';
+            console.log('Plan Type:', planType);
             
             // Set border color based on plan type
             const borderColors = {
@@ -469,6 +472,7 @@ import { Icon } from 'astro-icon/components';
             };
             
             const borderColor = borderColors[planType.toLowerCase()] || borderColors['free'];
+            console.log('Border Color:', borderColor);
             
             if (userAvatar) {
               userAvatar.style.borderColor = borderColor;
