@@ -220,7 +220,10 @@ import { Icon } from 'astro-icon/components';
     try {
       // Check if user is logged in
       const accessToken = localStorage.getItem('access_token');
-      if (!accessToken) {
+      const refreshToken = localStorage.getItem('refresh_token');
+      
+      if (!accessToken || !refreshToken) {
+        console.log('No tokens found, redirecting to signin');
         window.location.href = '/signin';
         return;
       }
