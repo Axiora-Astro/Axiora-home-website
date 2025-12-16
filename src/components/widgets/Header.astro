@@ -540,6 +540,12 @@ import { Icon } from 'astro-icon/components';
 
   let selectedAvatarFile = null;
 
+  // Navigate to usage page
+  const seeUsageBtn = document.getElementById('see-usage-btn');
+  seeUsageBtn?.addEventListener('click', () => {
+    window.location.href = '/usage';
+  });
+
   // Open edit profile modal
   editProfileBtn?.addEventListener('click', async () => {
     const { getCurrentUser } = await import('../../lib/auth');

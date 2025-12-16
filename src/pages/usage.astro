@@ -1,0 +1,304 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Layout metadata={{ title: 'Usage Statistics' }}>
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Usage Statistics</h1>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">Track your API usage and subscription details</p>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p class="mt-4 text-gray-600 dark:text-gray-400">Loading usage data...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error" class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+        <div class="flex items-center gap-3">
+          <Icon name="tabler:alert-circle" class="w-6 h-6 text-red-600 dark:text-red-400" />
+          <div>
+            <h3 class="text-lg font-semibold text-red-900 dark:text-red-100">Error Loading Data</h3>
+            <p id="error-message" class="text-red-700 dark:text-red-300 mt-1"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div id="content" class="hidden space-y-6">
+        <!-- Current Plan Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Current Plan</h2>
+            <span id="plan-badge" class="px-4 py-2 rounded-full text-sm font-semibold text-white"></span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Plan Type</p>
+              <p id="plan-type" class="text-lg font-semibold text-gray-900 dark:text-white capitalize"></p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Status</p>
+              <p id="plan-status" class="text-lg font-semibold"></p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Valid Until</p>
+              <p id="plan-end-date" class="text-lg font-semibold text-gray-900 dark:text-white"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- API Calls Usage Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">API Calls</h2>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Usage since <span id="usage-since"></span></p>
+            </div>
+            <div class="text-right">
+              <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                <span id="calls-used">0</span> / <span id="calls-total">0</span>
+              </p>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <span id="calls-remaining" class="font-semibold">0</span> left
+              </p>
+            </div>
+          </div>
+          
+          <!-- Progress Bar -->
+          <div class="relative w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full transition-all duration-500 rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Usage Breakdown -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Usage Breakdown</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Reports Created -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <Icon name="tabler:file-text" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Reports Created</p>
+                <p id="reports-created" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+              </div>
+            </div>
+
+            <!-- Summaries Created -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                <Icon name="tabler:notes" class="w-6 h-6 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Summaries Created</p>
+                <p id="summaries-created" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+              </div>
+            </div>
+
+            <!-- Recommendations Created -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <Icon name="tabler:bulb" class="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Recommendations</p>
+                <p id="recommendations-created" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+              </div>
+            </div>
+
+            <!-- Dashboards Created -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+                <Icon name="tabler:layout-dashboard" class="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Dashboards Created</p>
+                <p id="dashboards-created" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+              </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-pink-100 dark:bg-pink-900/30 rounded-lg">
+                <Icon name="tabler:message" class="w-6 h-6 text-pink-600 dark:text-pink-400" />
+              </div>
+              <div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Chat Messages</p>
+                <p id="chat-messages" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="flex justify-center">
+          <a href="/" class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+            <Icon name="tabler:arrow-left" class="w-5 h-5" />
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Refresh access token using refresh token
+  async function refreshAccessToken() {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/v1/auth/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refresh_token: refreshToken })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        return true;
+      } else {
+        localStorage.clear();
+        return false;
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      return false;
+    }
+  }
+
+  // Make authenticated API call with automatic token refresh
+  async function fetchWithAuth(url, options = {}) {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('No access token');
+    }
+
+    const headers = {
+      ...options.headers,
+      'Authorization': `Bearer ${accessToken}`
+    };
+
+    let response = await fetch(url, { ...options, headers });
+
+    if (response.status === 401) {
+      const refreshed = await refreshAccessToken();
+      if (refreshed) {
+        const newAccessToken = localStorage.getItem('access_token');
+        headers['Authorization'] = `Bearer ${newAccessToken}`;
+        response = await fetch(url, { ...options, headers });
+      } else {
+        window.location.href = '/signin';
+        throw new Error('Session expired');
+      }
+    }
+
+    return response;
+  }
+
+  async function loadUsageData() {
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const content = document.getElementById('content');
+    const errorMessage = document.getElementById('error-message');
+
+    try {
+      // Check if user is logged in
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
+        window.location.href = '/signin';
+        return;
+      }
+
+      // Fetch usage data
+      const response = await fetchWithAuth(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/usage`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch usage data');
+      }
+
+      const data = await response.json();
+
+      // Hide loading, show content
+      loading?.classList.add('hidden');
+      content?.classList.remove('hidden');
+
+      // Plan colors
+      const planColors = {
+        'pro': '#3b82f6',
+        'business': '#10b981',
+        'enterprise': '#eab308',
+        'free': '#a855f7'
+      };
+
+      const planType = data.subscription?.plan_type || 'free';
+      const planColor = planColors[planType.toLowerCase()] || planColors['free'];
+
+      // Update plan info
+      document.getElementById('plan-badge')!.textContent = planType.toUpperCase();
+      document.getElementById('plan-badge')!.style.backgroundColor = planColor;
+      document.getElementById('plan-type')!.textContent = planType;
+      
+      const status = data.subscription?.status || 'inactive';
+      const statusEl = document.getElementById('plan-status')!;
+      statusEl.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+      statusEl.style.color = status === 'active' ? '#10b981' : '#ef4444';
+
+      const endDate = data.subscription?.end_date ? new Date(data.subscription.end_date).toLocaleDateString() : 'N/A';
+      document.getElementById('plan-end-date')!.textContent = endDate;
+
+      // Update API calls
+      const allowedCalls = data.allowed_calls || 0;
+      const remainingCalls = data.subscription?.remaining_calls || 0;
+      const usedCalls = allowedCalls - remainingCalls;
+      const usagePercent = allowedCalls > 0 ? (usedCalls / allowedCalls) * 100 : 0;
+
+      document.getElementById('calls-used')!.textContent = usedCalls.toString();
+      document.getElementById('calls-total')!.textContent = allowedCalls.toString();
+      document.getElementById('calls-remaining')!.textContent = remainingCalls.toString();
+
+      // Update progress bar
+      const progressBar = document.getElementById('progress-bar')!;
+      progressBar.style.width = `${usagePercent}%`;
+      progressBar.style.backgroundColor = planColor;
+
+      // Update usage since date
+      const startDate = data.subscription?.start_date ? new Date(data.subscription.start_date).toLocaleDateString() : 'N/A';
+      document.getElementById('usage-since')!.textContent = startDate;
+
+      // Update usage breakdown
+      const tracking = data.tracking || {};
+      document.getElementById('reports-created')!.textContent = (tracking.reports_created || 0).toString();
+      document.getElementById('summaries-created')!.textContent = (tracking.summaries_created || 0).toString();
+      document.getElementById('recommendations-created')!.textContent = (tracking.recommendations_created || 0).toString();
+      document.getElementById('dashboards-created')!.textContent = (tracking.dashboards_created || 0).toString();
+      document.getElementById('chat-messages')!.textContent = (tracking.chat_messages || 0).toString();
+
+    } catch (err) {
+      console.error('Error loading usage data:', err);
+      loading?.classList.add('hidden');
+      error?.classList.remove('hidden');
+      if (errorMessage) {
+        errorMessage.textContent = err instanceof Error ? err.message : 'An unexpected error occurred';
+      }
+    }
+  }
+
+  // Load data on page load
+  loadUsageData();
+</script>
