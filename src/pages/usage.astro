@@ -278,7 +278,14 @@ import { Icon } from 'astro-icon/components';
       // Update progress bar
       const progressBar = document.getElementById('progress-bar')!;
       progressBar.style.width = `${usagePercent}%`;
-      progressBar.style.backgroundColor = planColor;
+      
+      // Change color to red if remaining calls are less than 10% of total
+      const remainingPercent = allowedCalls > 0 ? (remainingCalls / allowedCalls) * 100 : 0;
+      if (remainingPercent < 10) {
+        progressBar.style.backgroundColor = '#ef4444'; // red
+      } else {
+        progressBar.style.backgroundColor = planColor;
+      }
 
       // Update usage since date
       const startDate = data.subscription?.start_date ? new Date(data.subscription.start_date).toLocaleDateString() : 'N/A';
