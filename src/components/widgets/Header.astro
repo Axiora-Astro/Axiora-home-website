@@ -37,9 +37,9 @@ import { Icon } from 'astro-icon/components';
         </button>
 
         <!-- User Menu (Not Logged In) -->
-        <button id="user-menu-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hidden md:flex items-center gap-2">
+        <button id="user-menu-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hidden md:flex flex-col items-center gap-1">
           <Icon name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
-          <span id="user-display-name" class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden"></span>
+          <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200 hidden"></span>
         </button>
         
         <!-- Logout Button (Hidden by default) -->
