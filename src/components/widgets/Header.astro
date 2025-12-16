@@ -6,10 +6,10 @@ import { Icon } from 'astro-icon/components';
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center py-4">
       <!-- Logo -->
-      <div class="flex items-center">
+      <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
         <img src="/Axiora-photos/Axiora-logo.jpg" alt="Axiora Logo" class="w-8 h-8 mr-2 rounded" />
         <span class="text-2xl font-bold text-gray-900 dark:text-white">Axiora</span>
-      </div>
+      </a>
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex space-x-8">
@@ -73,8 +73,7 @@ import { Icon } from 'astro-icon/components';
           <span class="text-sm font-medium">Logout</span>
         </button>
 
-        <a href="/coming-soon" class="btn btn-secondary hidden md:inline-block">Download</a>
-        <a href="/coming-soon" class="btn btn-primary hidden md:inline-block">Try Online</a>
+        <a href="/coming-soon" class="hidden md:inline-block px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">Download</a>
 
         <!-- Mobile menu button -->
         <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
