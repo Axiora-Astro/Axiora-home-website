@@ -46,8 +46,10 @@ import { Icon } from 'astro-icon/components';
         <div class="relative hidden md:block" id="user-profile-container">
           <button id="user-profile" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex flex-col items-center gap-1">
             <div class="relative">
-              <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
-              <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" style="border: 2px solid transparent;" />
+              <Icon id="user-icon" name="tabler:user-circle" class="w-10 h-10 text-gray-700 dark:text-gray-200" />
+              <img id="user-avatar" src="" alt="User Avatar" class="w-10 h-10 rounded-full hidden" style="border: 3px solid transparent;" />
+              <!-- Plan Badge -->
+              <span id="plan-badge" class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 px-2 py-0.5 text-[10px] font-semibold rounded-full bg-gray-800 text-white hidden whitespace-nowrap"></span>
             </div>
             <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200"></span>
           </button>
@@ -458,27 +460,31 @@ import { Icon } from 'astro-icon/components';
           
           if (response.ok) {
             const profileData = await response.json();
-            console.log('Profile Data:', profileData);
-            console.log('Subscription:', profileData?.subscription);
             const planType = profileData?.subscription?.plan_type || 'free';
-            console.log('Plan Type:', planType);
             
-            // Set border color based on plan type
-            const borderColors = {
-              'pro': '#3b82f6',      // blue
-              'business': '#10b981', // green
-              'enterprise': '#eab308', // yellow
-              'free': '#a855f7'      // purple
+            // Set border color and badge based on plan type
+            const planConfig = {
+              'pro': { color: '#3b82f6', name: 'Pro' },
+              'business': { color: '#10b981', name: 'Business' },
+              'enterprise': { color: '#eab308', name: 'Enterprise' },
+              'free': { color: '#a855f7', name: 'Free' }
             };
             
-            const borderColor = borderColors[planType.toLowerCase()] || borderColors['free'];
-            console.log('Border Color:', borderColor);
+            const config = planConfig[planType.toLowerCase()] || planConfig['free'];
             
             if (userAvatar) {
-              userAvatar.style.borderColor = borderColor;
+              userAvatar.style.borderColor = config.color;
             }
             if (userIcon) {
-              userIcon.style.color = borderColor;
+              userIcon.style.color = config.color;
+            }
+            
+            // Set plan badge
+            const planBadge = document.getElementById('plan-badge');
+            if (planBadge) {
+              planBadge.textContent = config.name;
+              planBadge.style.backgroundColor = config.color;
+              planBadge.classList.remove('hidden');
             }
           }
         }
