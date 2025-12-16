@@ -452,11 +452,7 @@ import { Icon } from 'astro-icon/components';
       try {
         const accessToken = localStorage.getItem('access_token');
         if (accessToken) {
-          const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/profile`, {
-            headers: {
-              'Authorization': `Bearer ${accessToken}`
-            }
-          });
+          const response = await fetchWithAuth(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/profile`);
           
           if (response.ok) {
             const profileData = await response.json();
