@@ -36,14 +36,20 @@ import { Icon } from 'astro-icon/components';
           <Icon name="tabler:moon" class="w-5 h-5 hidden dark:block" />
         </button>
 
-        <!-- User Menu (Not Logged In) -->
-        <button id="user-menu-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hidden md:flex flex-col items-center gap-1">
-          <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
-          <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" />
-          <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200 hidden"></span>
+        <!-- Sign In Button (Shown when not logged in) -->
+        <button id="signin-btn" class="hidden md:flex p-2 rounded-md hover:bg-green-100 dark:hover:bg-green-900/30 items-center gap-2 text-green-600 dark:text-green-400">
+          <Icon name="tabler:login" class="w-5 h-5" />
+          <span class="text-sm font-medium">Sign In</span>
         </button>
         
-        <!-- Logout Button (Hidden by default) -->
+        <!-- User Profile (Hidden by default, shown when logged in) -->
+        <button id="user-profile" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex flex-col items-center gap-1">
+          <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+          <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" />
+          <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200"></span>
+        </button>
+        
+        <!-- Logout Button (Hidden by default, shown when logged in) -->
         <button id="logout-btn" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 items-center gap-2 text-red-600 dark:text-red-400">
           <Icon name="tabler:logout" class="w-5 h-5" />
           <span class="text-sm font-medium">Logout</span>
@@ -318,6 +324,10 @@ import { Icon } from 'astro-icon/components';
   async function checkLoginStatus() {
     const { getCurrentUser, isLoggedIn } = await import('../../lib/auth');
     
+    const signinBtn = document.getElementById('signin-btn');
+    const userProfile = document.getElementById('user-profile');
+    const logoutBtn = document.getElementById('logout-btn');
+    
     if (isLoggedIn()) {
       const user = getCurrentUser();
       
@@ -331,15 +341,22 @@ import { Icon } from 'astro-icon/components';
       // Get profile image URL (avatar_url or picture from Google)
       const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
       
-      // Show user name and logout button
+      // Show user profile and logout button, hide sign in button
       const userDisplayName = document.getElementById('user-display-name');
-      const logoutBtn = document.getElementById('logout-btn');
       const userIcon = document.getElementById('user-icon');
       const userAvatar = document.getElementById('user-avatar');
       
+      if (signinBtn) {
+        signinBtn.classList.add('hidden');
+      }
+      
+      if (userProfile) {
+        userProfile.classList.remove('hidden');
+        userProfile.classList.add('md:flex');
+      }
+      
       if (userDisplayName) {
         userDisplayName.textContent = displayName;
-        userDisplayName.classList.remove('hidden');
       }
       
       // Show avatar image if available, otherwise show icon
@@ -351,14 +368,19 @@ import { Icon } from 'astro-icon/components';
       
       if (logoutBtn) {
         logoutBtn.classList.remove('hidden');
-        logoutBtn.classList.add('md:flex'); // Show as flex on medium screens and up
+        logoutBtn.classList.add('md:flex');
       }
-      
-      // Change user menu toggle behavior - don't open modal when logged in
-      const userMenuToggle = document.getElementById('user-menu-toggle');
-      if (userMenuToggle) {
-        userMenuToggle.style.cursor = 'default';
-        userMenuToggle.onclick = null; // Remove click handler
+    } else {
+      // User not logged in - show sign in button
+      if (signinBtn) {
+        signinBtn.classList.remove('hidden');
+        signinBtn.classList.add('md:flex');
+      }
+      if (userProfile) {
+        userProfile.classList.add('hidden');
+      }
+      if (logoutBtn) {
+        logoutBtn.classList.add('hidden');
       }
     }
   }
@@ -380,20 +402,17 @@ import { Icon } from 'astro-icon/components';
 
   // Modal functionality
   const modal = document.getElementById('login-modal');
-  const userMenuToggle = document.getElementById('user-menu-toggle');
+  const signinBtn = document.getElementById('signin-btn');
   const closeModal = document.getElementById('close-modal');
   const tabSignin = document.getElementById('tab-signin');
   const tabSignup = document.getElementById('tab-signup');
   const signinForm = document.getElementById('signin-form');
   const signupForm = document.getElementById('signup-form');
 
-  // Open modal (only if not logged in)
-  userMenuToggle?.addEventListener('click', async () => {
-    const { isLoggedIn } = await import('../../lib/auth');
-    if (!isLoggedIn()) {
-      modal?.classList.remove('hidden');
-      modal?.classList.add('flex');
-    }
+  // Open modal when clicking sign in button
+  signinBtn?.addEventListener('click', () => {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
   });
 
   // Close modal
