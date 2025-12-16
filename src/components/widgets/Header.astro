@@ -416,8 +416,8 @@ import { Icon } from 'astro-icon/components';
         || user?.email?.split('@')[0] 
         || 'User';
       
-      // Get profile image URL (avatar_url or picture from Google)
-      const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+      // Get profile image URL (picture field for all sources)
+      const avatarUrl = user?.user_metadata?.picture;
       
       // Show user profile and logout button, hide sign in button
       const userDisplayName = document.getElementById('user-display-name');
@@ -509,7 +509,7 @@ import { Icon } from 'astro-icon/components';
         || user?.email?.split('@')[0] 
         || '';
       
-      const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || '';
+      const avatarUrl = user?.user_metadata?.picture || '';
       
       if (editDisplayName) editDisplayName.value = displayName;
       if (editAvatarPreview) editAvatarPreview.src = avatarUrl || '/default-avatar.png';
