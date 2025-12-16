@@ -38,7 +38,8 @@ import { Icon } from 'astro-icon/components';
 
         <!-- User Menu (Not Logged In) -->
         <button id="user-menu-toggle" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hidden md:flex flex-col items-center gap-1">
-          <Icon name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+          <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+          <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" />
           <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200 hidden"></span>
         </button>
         
@@ -327,13 +328,25 @@ import { Icon } from 'astro-icon/components';
         || user?.email?.split('@')[0] 
         || 'User';
       
+      // Get profile image URL (avatar_url or picture from Google)
+      const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+      
       // Show user name and logout button
       const userDisplayName = document.getElementById('user-display-name');
       const logoutBtn = document.getElementById('logout-btn');
+      const userIcon = document.getElementById('user-icon');
+      const userAvatar = document.getElementById('user-avatar');
       
       if (userDisplayName) {
         userDisplayName.textContent = displayName;
         userDisplayName.classList.remove('hidden');
+      }
+      
+      // Show avatar image if available, otherwise show icon
+      if (avatarUrl && userAvatar && userIcon) {
+        userAvatar.src = avatarUrl;
+        userAvatar.classList.remove('hidden');
+        userIcon.classList.add('hidden');
       }
       
       if (logoutBtn) {
