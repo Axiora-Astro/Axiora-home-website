@@ -402,6 +402,66 @@ import { Icon } from 'astro-icon/components';
     }
   });
 
+  // Refresh access token using refresh token
+  async function refreshAccessToken() {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/v1/auth/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refresh_token: refreshToken })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        return true;
+      } else {
+        localStorage.clear();
+        return false;
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      return false;
+    }
+  }
+
+  // Make authenticated API call with automatic token refresh
+  async function fetchWithAuth(url, options = {}) {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('No access token');
+    }
+
+    const headers = {
+      ...options.headers,
+      'Authorization': `Bearer ${accessToken}`
+    };
+
+    let response = await fetch(url, { ...options, headers });
+
+    if (response.status === 401) {
+      const refreshed = await refreshAccessToken();
+      if (refreshed) {
+        const newAccessToken = localStorage.getItem('access_token');
+        headers['Authorization'] = `Bearer ${newAccessToken}`;
+        response = await fetch(url, { ...options, headers });
+      } else {
+        window.location.href = '/signin';
+        throw new Error('Session expired');
+      }
+    }
+
+    return response;
+  }
+
   // Check if user is logged in on page load
   async function checkLoginStatus() {
     const { getCurrentUser, isLoggedIn } = await import('../../lib/auth');
