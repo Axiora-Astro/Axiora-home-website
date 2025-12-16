@@ -45,8 +45,10 @@ import { Icon } from 'astro-icon/components';
         <!-- User Profile (Hidden by default, shown when logged in) -->
         <div class="relative hidden md:block" id="user-profile-container">
           <button id="user-profile" class="hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:flex flex-col items-center gap-1">
-            <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
-            <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" />
+            <div class="relative">
+              <Icon id="user-icon" name="tabler:user-circle" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              <img id="user-avatar" src="" alt="User Avatar" class="w-6 h-6 rounded-full hidden" style="border: 2px solid transparent;" />
+            </div>
             <span id="user-display-name" class="text-xs font-medium text-gray-700 dark:text-gray-200"></span>
           </button>
           
@@ -442,6 +444,42 @@ import { Icon } from 'astro-icon/components';
         userAvatar.src = avatarUrl;
         userAvatar.classList.remove('hidden');
         userIcon.classList.add('hidden');
+      }
+      
+      // Fetch subscription data and set border color
+      try {
+        const accessToken = localStorage.getItem('access_token');
+        if (accessToken) {
+          const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/profile`, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          });
+          
+          if (response.ok) {
+            const profileData = await response.json();
+            const planType = profileData?.subscription?.plan_type || 'free';
+            
+            // Set border color based on plan type
+            const borderColors = {
+              'pro': '#3b82f6',      // blue
+              'business': '#10b981', // green
+              'enterprise': '#eab308', // yellow
+              'free': '#a855f7'      // purple
+            };
+            
+            const borderColor = borderColors[planType.toLowerCase()] || borderColors['free'];
+            
+            if (userAvatar) {
+              userAvatar.style.borderColor = borderColor;
+            }
+            if (userIcon) {
+              userIcon.style.color = borderColor;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching subscription data:', error);
       }
       
       if (logoutBtn) {
