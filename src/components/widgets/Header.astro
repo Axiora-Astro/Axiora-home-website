@@ -419,9 +419,25 @@ import { Icon } from 'astro-icon/components';
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        return true;
+        try {
+          localStorage.setItem('access_token', data.access_token);
+          localStorage.setItem('refresh_token', data.refresh_token);
+          return true;
+        } catch (storageError) {
+          // localStorage quota exceeded - clear everything except theme and retry
+          console.warn('localStorage quota exceeded, clearing and retrying');
+          const theme = localStorage.getItem('theme');
+          localStorage.clear();
+          if (theme) localStorage.setItem('theme', theme);
+          try {
+            localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem('refresh_token', data.refresh_token);
+            return true;
+          } catch (retryError) {
+            console.error('Failed to save tokens even after clearing localStorage:', retryError);
+            return false;
+          }
+        }
       } else {
         localStorage.clear();
         return false;
