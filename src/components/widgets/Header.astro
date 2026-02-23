@@ -453,7 +453,7 @@ import { Icon } from 'astro-icon/components';
         headers['Authorization'] = `Bearer ${newAccessToken}`;
         response = await fetch(url, { ...options, headers });
       } else {
-        window.location.href = '/signin';
+        window.location.href = '/';
         throw new Error('Session expired');
       }
     }
