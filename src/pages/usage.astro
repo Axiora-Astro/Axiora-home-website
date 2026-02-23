@@ -205,7 +205,8 @@ import { Icon } from 'astro-icon/components';
         headers['Authorization'] = `Bearer ${newAccessToken}`;
         response = await fetch(url, { ...options, headers });
       } else {
-        window.location.href = '/';
+        // Session expired - clear tokens but don't redirect
+        localStorage.clear();
         throw new Error('Session expired');
       }
     }
@@ -225,8 +226,10 @@ import { Icon } from 'astro-icon/components';
       const refreshToken = localStorage.getItem('refresh_token');
       
       if (!accessToken || !refreshToken) {
-        console.log('No tokens found, redirecting to signin');
-        window.location.href = '/';
+        console.log('No tokens found');
+        if (loading) loading.classList.add('hidden');
+        if (error) error.classList.remove('hidden');
+        if (errorMessage) errorMessage.textContent = 'Please sign in to view your usage data';
         return;
       }
 
