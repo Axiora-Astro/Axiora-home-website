@@ -287,8 +287,8 @@ import { Icon } from 'astro-icon/components';
       document.getElementById('plan-end-date')!.textContent = endDate;
 
       // Update API calls
-      const allowedCalls = data.allowed_calls || 0;
-      const remainingCalls = data.subscription?.remaining_calls || 0;
+      const allowedCalls = data.tokens_quota || 0;
+      const remainingCalls = data.subscription?.remaining_tokens_quota || 0;
       const usedCalls = allowedCalls - remainingCalls;
       const usagePercent = allowedCalls > 0 ? (usedCalls / allowedCalls) * 100 : 0;
 
@@ -313,12 +313,13 @@ import { Icon } from 'astro-icon/components';
       document.getElementById('usage-since')!.textContent = startDate;
 
       // Update usage breakdown
-      const tracking = data.tracking || {};
-      document.getElementById('reports-created')!.textContent = (tracking.reports_created || 0).toString();
-      document.getElementById('summaries-created')!.textContent = (tracking.summaries_created || 0).toString();
-      document.getElementById('recommendations-created')!.textContent = (tracking.recommendations_created || 0).toString();
-      document.getElementById('dashboards-created')!.textContent = (tracking.dashboards_created || 0).toString();
-      document.getElementById('chat-messages')!.textContent = (tracking.chat_messages || 0).toString();
+      // Note: tracking object has been removed from API response
+      // Setting all values to 0 as tracking data is no longer available
+      document.getElementById('reports-created')!.textContent = '0';
+      document.getElementById('summaries-created')!.textContent = '0';
+      document.getElementById('recommendations-created')!.textContent = '0';
+      document.getElementById('dashboards-created')!.textContent = '0';
+      document.getElementById('chat-messages')!.textContent = '0';
 
     } catch (err) {
       console.error('Error loading usage data:', err);

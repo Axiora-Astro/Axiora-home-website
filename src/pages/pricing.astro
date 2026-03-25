@@ -210,7 +210,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
               <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
-              ${plan.allowed_calls === 999999 ? 'Unlimited' : plan.allowed_calls.toLocaleString()} API calls
+              ${plan.tokens_quota === 999999 ? 'Unlimited' : plan.tokens_quota.toLocaleString()} API calls
             </div>
             
             <ul class="space-y-3 mb-8">
