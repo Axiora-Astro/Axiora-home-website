@@ -32,7 +32,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
       <div id="error" class="hidden mb-8 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg"></div>
 
       <!-- Pricing Cards Container -->
-      <div id="pricing-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 hidden"></div>
+      <div id="pricing-cards" class="flex flex-wrap justify-center gap-8 hidden"></div>
       
       <!-- FAQ Section -->
       <div class="mt-20 text-center">
@@ -58,7 +58,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
   <script define:vars={{ API_URL }}>
     // Plan features mapping
     const planFeatures = {
-      free: [
+      freetrial: [
         'Basic data analysis',
         '100 API calls per month',
         'Standard report generation',
@@ -85,17 +85,6 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
         'Team collaboration',
         'Custom branding'
       ],
-      enterprise: [
-        'Enterprise-grade analysis',
-        '10,000 API calls per month',
-        'Custom report templates',
-        '24/7 dedicated support',
-        'Advanced analytics',
-        'Unlimited exports',
-        'Full API access',
-        'Custom integrations',
-        'SLA guarantee'
-      ],
       developing: [
         'Full development access',
         'Unlimited API calls',
@@ -107,7 +96,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
     };
 
     // Plan order for display
-    const planOrder = ['free', 'pro', 'business', 'enterprise'];
+    const planOrder = ['freetrial', 'pro', 'business'];
 
     // Calculate discounted price
     function getDiscountedPrice(cost, discount) {
@@ -119,8 +108,9 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
       const isComingSoon = plan.availability === 'Comingsoon';
       const hasDiscount = plan.discount > 0;
       const discountedPrice = hasDiscount ? getDiscountedPrice(plan.cost, plan.discount) : plan.cost;
-      const features = planFeatures[plan.type] || [];
-      const isPopular = plan.type === 'pro';
+      const planType = plan.type.toLowerCase().replace(' ', '');
+      const features = planFeatures[planType] || [];
+      const isPopular = planType === 'pro';
       
       const popularBadge = isPopular ? `
         <div class="absolute top-0 right-0 bg-blue-500 text-white px-4 py-1 text-sm font-semibold rounded-bl-lg">
@@ -148,7 +138,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
           <span class="text-4xl font-bold text-gray-900 dark:text-white">
             $${discountedPrice.toFixed(2)}
           </span>
-          <span class="text-gray-600 dark:text-gray-400">/month</span>
+          <span class="text-gray-600 dark:text-gray-400">${planType === 'freetrial' ? '' : '/month'}</span>
         </div>
       `;
       
@@ -174,7 +164,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
             Coming Soon
           </button>
         `;
-      } else if (plan.type === 'developing') {
+      } else if (planType === 'developing') {
         buttonHTML = `
           <a href="#footer" class="block w-full py-3 px-6 rounded-lg font-semibold text-center bg-purple-600 hover:bg-purple-700 text-white transition-colors">
             Contact Us
@@ -198,7 +188,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
           
           <div class="p-8 ${isComingSoon ? 'mt-10' : ''}">
             <h3 class="text-2xl font-bold text-gray-900 dark:text-white capitalize mb-2">
-              ${plan.type}
+              ${planType === 'freetrial' ? 'Free Trial' : planType}
             </h3>
             
             <div class="mb-6">
