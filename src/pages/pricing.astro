@@ -59,31 +59,25 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
     // Plan features mapping
     const planFeatures = {
       freetrial: [
-        'Basic data analysis',
-        '100 API calls per month',
-        'Standard report generation',
-        'Email support',
-        'Community access'
+        'Export as .axr and PDF',
+        'Maximum 10 chat messages per report',
+        'Upload CSV and Excel files',
+        'Maximum 6 questions per dashboard'
       ],
       pro: [
-        'Advanced data analysis',
-        '1,000 API calls per month',
-        'Premium report generation',
-        'Priority email support',
-        'Advanced visualizations',
-        'Export to multiple formats',
-        'API access'
+        'Export as .axr, .twbx, PDF, and PPTX',
+        'Maximum 30 chat messages per report',
+        'CSV, Excel, and Google Sheets',
+        '10 charts per dashboard',
+        'All Free Trial features'
       ],
       business: [
-        'Business-grade analysis',
-        '5,000 API calls per month',
-        'Custom report templates',
-        'Priority support',
-        'Advanced analytics',
-        'Multiple exports',
-        'Full API access',
-        'Team collaboration',
-        'Custom branding'
+        'Unlimited chat messages per report',
+        'Connect to databases',
+        '20 charts per dashboard',
+        'Advanced chart types',
+        'Early access to new features',
+        'All Pro features'
       ],
       developing: [
         'Full development access',
@@ -200,7 +194,7 @@ const API_URL = import.meta.env.PUBLIC_API_URL || 'https://api.axiora.software';
               <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
-              ${plan.tokens_quota === 999999 ? 'Unlimited' : plan.tokens_quota.toLocaleString()} API calls
+              ${plan.tokens_quota === 999999 ? 'Unlimited' : plan.tokens_quota.toLocaleString()} tokens
             </div>
             
             <ul class="space-y-3 mb-8">
