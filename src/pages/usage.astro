@@ -80,8 +80,21 @@ import { Icon } from 'astro-icon/components';
 
         <!-- Usage Breakdown -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Usage Breakdown</h2>
-          
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Usage Breakdown</h2>
+
+          <!-- Period Filter -->
+          <div class="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+            <button id="breakdown-filter-current" class="px-4 py-2 text-sm font-medium border-b-2 border-blue-600 text-blue-600 dark:text-blue-400">
+              This Month
+            </button>
+            <button id="breakdown-filter-6months" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+              Last 6 Months
+            </button>
+            <button id="breakdown-filter-alltime" class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+              All Time
+            </button>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Reports Created -->
             <div class="flex items-start gap-4">
@@ -312,14 +325,8 @@ import { Icon } from 'astro-icon/components';
       const startDate = data.subscription?.start_date ? new Date(data.subscription.start_date).toLocaleDateString() : 'N/A';
       document.getElementById('usage-since')!.textContent = startDate;
 
-      // Update usage breakdown
-      // Note: tracking object has been removed from API response
-      // Setting all values to 0 as tracking data is no longer available
-      document.getElementById('reports-created')!.textContent = '0';
-      document.getElementById('summaries-created')!.textContent = '0';
-      document.getElementById('recommendations-created')!.textContent = '0';
-      document.getElementById('dashboards-created')!.textContent = '0';
-      document.getElementById('chat-messages')!.textContent = '0';
+      // Fetch initial usage breakdown (current month)
+      await fetchBreakdown('current_month');
 
     } catch (err) {
       console.error('Error loading usage data:', err);
@@ -330,6 +337,45 @@ import { Icon } from 'astro-icon/components';
       }
     }
   }
+
+  async function fetchBreakdown(period: string) {
+    try {
+      const response = await fetchWithAuth(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/breakdown?period=${period}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      document.getElementById('reports-created')!.textContent = (data.reports_created ?? 0).toString();
+      document.getElementById('summaries-created')!.textContent = (data.summaries_created ?? 0).toString();
+      document.getElementById('recommendations-created')!.textContent = (data.recommendations_created ?? 0).toString();
+      document.getElementById('dashboards-created')!.textContent = (data.dashboards_created ?? 0).toString();
+      document.getElementById('chat-messages')!.textContent = (data.chat_messages ?? 0).toString();
+    } catch (err) {
+      console.error('Error loading usage breakdown:', err);
+    }
+  }
+
+  // Period filter tab switching
+  const filterButtons = [
+    { id: 'breakdown-filter-current', period: 'current_month' },
+    { id: 'breakdown-filter-6months', period: 'last_6_months' },
+    { id: 'breakdown-filter-alltime', period: 'all_time' },
+  ];
+
+  const activeClasses = ['border-blue-600', 'text-blue-600', 'dark:text-blue-400'];
+  const inactiveClasses = ['border-transparent', 'text-gray-500', 'dark:text-gray-400'];
+
+  filterButtons.forEach(({ id, period }) => {
+    document.getElementById(id)?.addEventListener('click', () => {
+      filterButtons.forEach(({ id: otherId }) => {
+        const btn = document.getElementById(otherId)!;
+        btn.classList.remove(...activeClasses);
+        btn.classList.add(...inactiveClasses);
+      });
+      const activeBtn = document.getElementById(id)!;
+      activeBtn.classList.remove(...inactiveClasses);
+      activeBtn.classList.add(...activeClasses);
+      fetchBreakdown(period);
+    });
+  });
 
   // Load data on page load
   loadUsageData();
