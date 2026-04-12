@@ -36,7 +36,7 @@ import { Icon } from 'astro-icon/components';
         <!-- Current Plan Card -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Current Plan</h2>
+            <h2 id="plan-card-title" class="text-xl font-semibold text-gray-900 dark:text-white">Current Plan</h2>
             <span id="plan-badge" class="px-4 py-2 rounded-full text-sm font-semibold text-white"></span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -263,7 +263,14 @@ import { Icon } from 'astro-icon/components';
       }
 
       // Fetch usage data
-      const response = await fetchWithAuth(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/usage`);
+      let response = await fetchWithAuth(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/usage`);
+      let isExpired = false;
+
+      if (response.status === 404) {
+        // No active subscription — fall back to last known subscription
+        response = await fetchWithAuth(`${import.meta.env.PUBLIC_API_URL}/api/v1/users/usage/last`);
+        isExpired = true;
+      }
 
       if (!response.ok) {
         throw new Error('Failed to fetch usage data');
@@ -274,6 +281,10 @@ import { Icon } from 'astro-icon/components';
       // Hide loading, show content
       loading?.classList.add('hidden');
       content?.classList.remove('hidden');
+
+      if (isExpired) {
+        document.getElementById('plan-card-title')!.textContent = 'Last Plan';
+      }
 
       // Plan colors
       const planColors = {
