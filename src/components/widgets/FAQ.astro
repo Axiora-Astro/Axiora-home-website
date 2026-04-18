@@ -1,0 +1,82 @@
+---
+const faqs = [
+  {
+    question: "Do I need to be a data analyst to use Axiora?",
+    answer: "No. Axiora is built specifically for people without a data background. You upload your file, add context about what you want to learn, and Axiora handles the analysis. The results are written in plain language, not statistical jargon."
+  },
+  {
+    question: "Does Axiora give business recommendations, or just charts?",
+    answer: "Both — but recommendations are the point. Axiora doesn't just visualize your data, it interprets it. You get actionable insights and suggested next steps based on what the data actually shows, not a set of charts you have to decode yourself."
+  },
+  {
+    question: "Is my data safe? Does it ever leave my device?",
+    answer: "Never. Axiora processes everything locally on your machine. Your files are never uploaded to a server, never stored in the cloud, and never sent anywhere. This is one of the core reasons Axiora is a desktop app — your data stays entirely under your control."
+  },
+  {
+    question: "How is Axiora different from just uploading my file to ChatGPT?",
+    answer: "ChatGPT gives you a conversation. Axiora gives you a report. There's no persistent output, no structured dashboard, no standardized chart selection, and no consistency guarantees when you use a general-purpose AI chatbot for data analysis. Axiora is purpose-built for this specific job — the results are reproducible, exportable, and structured for business use. Beyond that: Axiora's charts are fully interactive (not static images), you don't need to write or engineer any prompts — just upload and go, and there are no dataset size limitations that cut off your analysis mid-file."
+  },
+  {
+    question: "Why a desktop app — and not a web app?",
+    answer: "Because your data shouldn't travel. A web app requires your files to be uploaded to a server for processing. Axiora runs entirely on your device, which means faster processing, full offline capability, and complete data privacy. In 2026, putting sensitive business data on a third-party server is a liability — not a feature."
+  },
+  {
+    question: "Can I trust the analysis for real business decisions — and is it consistent?",
+    answer: "Axiora's analysis is deterministic — running the same file produces the same results. It does not hallucinate insights or invent patterns that aren't in your data. That said, Axiora is a tool to support decisions, not replace judgment. Use it to surface patterns and structure your thinking, then apply your own domain knowledge to act on them."
+  }
+];
+---
+
+<section id="faq" class="py-20 bg-white dark:bg-gray-900">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+        Frequently Asked Questions
+      </h2>
+    </div>
+
+    <div class="space-y-4">
+      {faqs.map((faq, index) => (
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+          <button
+            class="w-full text-left px-6 py-4 flex justify-between items-center bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            aria-expanded="false"
+            data-faq-btn={index}
+          >
+            <span class="font-semibold text-gray-900 dark:text-white pr-4">{faq.question}</span>
+            <svg
+              class="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0 transition-transform duration-200"
+              data-faq-icon={index}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div
+            class="hidden px-6 pb-4 bg-gray-50 dark:bg-gray-800"
+            data-faq-panel={index}
+          >
+            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{faq.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-faq-btn]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const index = btn.getAttribute('data-faq-btn');
+      const panel = document.querySelector(`[data-faq-panel="${index}"]`);
+      const icon = document.querySelector(`[data-faq-icon="${index}"]`);
+      const isOpen = !panel.classList.contains('hidden');
+
+      panel.classList.toggle('hidden', isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      icon.classList.toggle('rotate-180', !isOpen);
+    });
+  });
+</script>

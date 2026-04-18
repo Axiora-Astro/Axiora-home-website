@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/widgets/Header.astro';
+import Footer from '../components/widgets/Footer.astro';
+---
+
+<Layout
+  title="About | Axiora"
+  description="Axiora was built to close the gap between having business data and actually understanding it — without requiring a data science background."
+>
+  <Header />
+
+  <main>
+    <section class="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          About Axiora
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300">
+          Built to close the gap between having data and understanding it.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-20 bg-white dark:bg-gray-900">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg dark:prose-invert max-w-none">
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Why Axiora exists</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Most businesses have more data than they've ever had — and less ability to act on it than they should. Not because the data isn't there. Because the tools designed to analyze it were built for specialists, not for the people who actually run the business.
+        </p>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Spreadsheets are for organizing. General AI chatbots are for conversation. Neither was designed to take a CSV file and produce a structured, reliable, shareable analysis report. That gap is exactly what Axiora fills.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-10">What Axiora does</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Axiora is a desktop application for single-file data analysis. You upload a CSV or Excel file, and Axiora delivers a full analysis report: a summary of the data's business domain, an interactive dashboard of charts selected by analytical standards, actionable business recommendations, and a chat assistant that answers follow-up questions with full context.
+        </p>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Reports can be exported as PDF or PowerPoint, and shared with teammates as .axr files — a format that preserves the full report context so collaborators can explore and build on the analysis.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-10">Why a desktop app</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Because your data shouldn't travel. A web application requires your files to be uploaded to a server for processing. Axiora runs entirely on your machine — faster processing, full offline capability, and complete data privacy. Your files are never uploaded, never stored remotely, never accessible to anyone but you.
+        </p>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          In an environment where data breaches are routine and compliance requirements are tightening, keeping sensitive business data on your own device isn't a limitation. It's the right default.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-10">Who it's built for</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+          Axiora is built for people who work with data but aren't data scientists: business owners, operations managers, team leads, analysts who need answers quickly and reliably. You don't need to know statistics. You don't need to write formulas. You upload your file, add context about what you want to understand, and Axiora handles the rest.
+        </p>
+
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

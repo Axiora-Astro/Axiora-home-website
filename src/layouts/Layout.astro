@@ -17,6 +17,7 @@ const { title, description = 'Data Analysis Made Simple - Axiora is a free deskt
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/jpeg" href="/logo.jpg" />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body class="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
     <slot />

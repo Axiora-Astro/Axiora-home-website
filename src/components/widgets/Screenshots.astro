@@ -4,41 +4,49 @@ const screenshots = [
     title: 'Login',
     description: 'Secure login system to protect your analysis projects and data.',
     image: '/Axiora-photos/Screenshots/Login.png',
+    alt: 'Axiora login screen',
   },
   {
     title: 'Home',
     description: 'Clean and intuitive home interface that gets you started quickly.',
     image: '/Axiora-photos/Screenshots/HomePage1.png',
+    alt: 'Axiora home screen interface',
   },
   {
     title: 'Upload Data',
     description: 'Simple drag-and-drop interface for uploading your Excel and CSV files.',
     image: '/Axiora-photos/Screenshots/DataUpload.png',
+    alt: 'Axiora file upload screen — drag and drop Excel or CSV file',
   },
   {
     title: 'Dashboard',
     description: 'Interactive dashboard with beautiful visualizations and key insights.',
     image: '/Axiora-photos/Screenshots/Thedashboard.png',
+    alt: 'Axiora interactive data dashboard with visualizations',
   },
   {
     title: 'Summary',
     description: 'Comprehensive data summary with key metrics and statistical overview.',
     image: '/Axiora-photos/Screenshots/Summary.png',
+    alt: 'Axiora data summary report with key metrics',
   },
   {
     title: 'Chat',
     description: 'AI-powered chat assistant to help you understand your data better.',
     image: '/Axiora-photos/Screenshots/Chat.png',
+    alt: 'Axiora AI chat assistant for data questions',
   },
   {
     title: 'Questions',
     description: 'Customize your analysis with specific questions about your data.',
     image: '/Axiora-photos/Screenshots/AddQuestions.png',
+    alt: 'Axiora custom analysis questions interface',
   },
   {
     title: 'Recommendations',
     description: 'Get AI-powered recommendations and actionable insights from your data.',
     image: '/Axiora-photos/Screenshots/Recommendations.png',
+    alt: 'Axiora AI-powered business recommendations from data',
   },
 ];
 ---
@@ -61,7 +69,7 @@ const screenshots = [
           <div class="relative group cursor-pointer" onclick={`openModal(${index})`}>
             <img
               src={screenshot.image}
-              alt={screenshot.title}
+              alt={screenshot.alt}
               class="w-full h-48 object-cover"
               loading="lazy"
             />

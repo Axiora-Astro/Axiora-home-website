@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/widgets/Header.astro';
+import Customers from '../components/widgets/Customers.astro';
+import Footer from '../components/widgets/Footer.astro';
+import { Icon } from 'astro-icon/components';
+---
+
+<Layout
+  title="Features | Axiora"
+  description="Explore Axiora's full feature set: interactive dashboards, AI-powered analysis, business recommendations, export to PDF and PowerPoint, and complete data privacy."
+>
+  <Header />
+
+  <main>
+    <section class="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          Everything you need to understand your data
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Axiora is purpose-built for data analysis — not adapted from a general-purpose tool. Every feature exists to get you from a spreadsheet to a decision faster.
+        </p>
+      </div>
+    </section>
+
+    <Customers />
+
+    <section class="py-20 bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:upload" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Upload & Go</h3>
+            <p class="text-gray-600 dark:text-gray-300">Drag and drop a CSV or Excel file and Axiora identifies the business domain, process, and relevant analysis questions automatically. No setup, no configuration.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:chart-bar" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Interactive Dashboard</h3>
+            <p class="text-gray-600 dark:text-gray-300">Every analysis question becomes an interactive chart. Charts are selected by analytical standards — not aesthetics — so each visualization actually answers its question.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:bulb" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Business Recommendations</h3>
+            <p class="text-gray-600 dark:text-gray-300">Axiora doesn't just show you charts — it interprets them. Get actionable next steps derived from what the data actually shows, written in plain language.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:message-circle" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">AI Chat Assistant</h3>
+            <p class="text-gray-600 dark:text-gray-300">Ask anything about your data in plain English. The built-in assistant has full context of your report and responds with specific, grounded answers — not generic summaries.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:shield-check" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Complete Data Privacy</h3>
+            <p class="text-gray-600 dark:text-gray-300">Your files never leave your machine. Axiora processes everything locally — no cloud uploads, no server storage, no third-party access to your data. Ever.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:file-export" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Export to PDF & PowerPoint</h3>
+            <p class="text-gray-600 dark:text-gray-300">Export your full report as a professional PDF or PowerPoint presentation. Share findings with stakeholders in the format they expect, without reformatting anything manually.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:share" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Share Reports (.axr)</h3>
+            <p class="text-gray-600 dark:text-gray-300">Share a complete report with teammates using the .axr format. Recipients can open, explore, and modify it — with the AI fully aware of the original data context.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:history" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Analysis History</h3>
+            <p class="text-gray-600 dark:text-gray-300">Every report is saved locally. Revisit, compare, and build on previous analyses without starting from scratch.</p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg w-fit mb-4">
+              <Icon name="tabler:rocket" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Fast & Offline</h3>
+            <p class="text-gray-600 dark:text-gray-300">Because analysis runs locally, Axiora is fast and works without an internet connection. No latency, no service outages, no waiting for a remote server.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-blue-600 text-white">
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to see it in action?</h2>
+        <p class="text-xl text-blue-100 mb-8">Download Axiora and run your first analysis in under five minutes.</p>
+        <a href="/coming-soon" class="inline-block px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
+          Download Axiora
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

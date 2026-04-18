@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /media/lilhuss/Hussam1/Courses/codes/Axiora_Repos/Axiora-Fullstack/Axiora-home-website/src/content/blog)",
+      "Bash(mkdir -p /media/lilhuss/Hussam1/Courses/codes/Axiora_Repos/Axiora-Fullstack/Axiora-home-website/src/pages/blog)",
+      "Bash(npm run *)"
+    ]
+  }
+}

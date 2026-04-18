@@ -1,0 +1,35 @@
+---
+const customers = [
+  {
+    name: 'Goia',
+    logo: '/images/goia_Logo_Red.png',
+    url: 'https://www.goia.app',
+  },
+];
+---
+
+<section class="py-12 bg-white dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl px-8 py-6 flex flex-col sm:flex-row items-center gap-8">
+
+      <!-- Left card -->
+      <div class="flex-shrink-0 border border-gray-200 dark:border-gray-700 rounded-xl p-5 min-w-[160px]">
+        <p class="text-blue-600 dark:text-blue-400 font-bold text-xl mb-1">Real customers</p>
+        <p class="text-gray-500 dark:text-gray-400 text-sm leading-snug">Don't just take our word for it</p>
+      </div>
+
+      <!-- Divider -->
+      <div class="hidden sm:block w-px h-12 bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
+
+      <!-- Logos -->
+      <div class="flex flex-wrap items-center gap-8">
+        {customers.map((c) => (
+          <a href={c.url} target="_blank" rel="noopener" aria-label={c.name}>
+            <img src={c.logo} alt={c.name} class="h-10 w-auto" />
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>

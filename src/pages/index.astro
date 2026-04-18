@@ -6,25 +6,110 @@ import Features from '../components/widgets/Features.astro';
 import ContentSections from '../components/widgets/ContentSections.astro';
 import Steps from '../components/widgets/Steps.astro';
 import Screenshots from '../components/widgets/Screenshots.astro';
-import Achievements from '../components/widgets/Achievements.astro';
-import TrialCode from '../components/widgets/TrialCode.astro';
 import NotifyMe from '../components/widgets/NotifyMe.astro';
+import FAQ from '../components/widgets/FAQ.astro';
+import Customers from '../components/widgets/Customers.astro';
 import Footer from '../components/widgets/Footer.astro';
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Axiora",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows, macOS",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Axiora is a free desktop application that delivers full data analysis reports from Excel and CSV files, with no data science experience required.",
+  "url": "https://www.axiora.software"
+};
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Axiora",
+  "url": "https://www.axiora.software",
+  "logo": "https://www.axiora.software/Axiora-photos/Axiora-logo.jpg"
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need to be a data analyst to use Axiora?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Axiora is built specifically for people without a data background. You upload your file, add context about what you want to learn, and Axiora handles the analysis. The results are written in plain language, not statistical jargon."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Axiora give business recommendations, or just charts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both — but recommendations are the point. Axiora doesn't just visualize your data, it interprets it. You get actionable insights and suggested next steps based on what the data actually shows, not a set of charts you have to decode yourself."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data safe? Does it ever leave my device?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Never. Axiora processes everything locally on your machine. Your files are never uploaded to a server, never stored in the cloud, and never sent anywhere."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Axiora different from just uploading my file to ChatGPT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ChatGPT gives you a conversation. Axiora gives you a report. There's no persistent output, no structured dashboard, no standardized chart selection, and no consistency guarantees when you use a general-purpose AI chatbot for data analysis. Axiora's charts are fully interactive, you don't need to write any prompts, and there are no dataset size limitations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why a desktop app — and not a web app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because your data shouldn't travel. A web app requires your files to be uploaded to a server for processing. Axiora runs entirely on your device, which means faster processing, full offline capability, and complete data privacy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I trust the analysis for real business decisions — and is it consistent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Axiora's analysis is deterministic — running the same file produces the same results. It does not hallucinate insights or invent patterns that aren't in your data. That said, Axiora is a tool to support decisions, not replace judgment."
+      }
+    }
+  ]
+};
 ---
 
-<Layout title="Axiora - Data Analysis Made Simple">
+<Layout
+  title="Axiora — AI Data Analysis Desktop App"
+  description="Axiora is a free desktop app that delivers full data analysis reports from Excel and CSV files. Interactive dashboards, business recommendations, and complete data privacy. No experience needed."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(softwareSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
   <Header />
-  
+
   <main>
     <Hero />
+    <Customers />
     <Features />
     <ContentSections />
     <Steps />
     <Screenshots />
-    <!--<Achievements />-->
-    <TrialCode />
+    <FAQ />
     <NotifyMe />
   </main>
-  
+
   <Footer />
 </Layout>
