@@ -334,87 +334,59 @@ import Footer from '../components/widgets/Footer.astro';
       <!-- Refund Policy -->
       <div id="refund" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8 scroll-mt-20">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">3. Refund Policy</h1>
-        
+
         <p class="text-gray-600 dark:text-gray-300 mb-6"><strong>Effective Date:</strong> March 28, 2026</p>
-        
+
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-          Axiora wants you to be satisfied with your subscription. This Refund Policy explains when and how refunds are issued. All payments are processed by <strong>Paddle</strong> as our Merchant of Record, and approved refunds are executed through Paddle back to your original payment method.
+          Axiora wants you to be satisfied with your subscription. All payments are processed by <strong>Paddle</strong> (paddle.com) as our Merchant of Record. Paddle's Buyer Terms apply to all purchases made through our checkout.
         </p>
 
         <hr class="my-6 border-gray-200 dark:border-gray-700" />
 
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.1 Eligibility for a Refund</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.1 Refund Window</h2>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-          You may be eligible for a refund if <strong>all</strong> of the following conditions are met:
+          You may request a refund within <strong>14 days</strong> of your purchase date, in accordance with Paddle's refund policy. Refund requests submitted after 14 days of the purchase date will not be eligible.
         </p>
-        <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-6 space-y-2">
-          <li>You have contacted Axiora support at support@axiora.software to initiate the refund process</li>
-          <li>Your refund request is submitted within <strong>5 calendar days</strong> of your purchase date</li>
-          <li>You have consumed <strong>less than 10%</strong> of your plan's token quota at the time of the request</li>
-        </ol>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-          If more than 10% of your token quota has been consumed, your purchase is non-refundable regardless of the time elapsed since purchase.
+          To request a refund, contact Paddle directly through their support or submit your request to us at <strong>support@axiora.software</strong> and we will coordinate with Paddle on your behalf.
         </p>
 
         <hr class="my-6 border-gray-200 dark:border-gray-700" />
 
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.2 How to Request a Refund</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.2 Refund Processing</h2>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-          To request a refund:
+          All refunds are processed by Paddle as the Merchant of Record:
         </p>
-        <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-6 space-y-2">
-          <li>Contact us at <strong>support@axiora.software</strong> with your account email and reason for the refund</li>
-          <li>You will be asked to complete a <strong>refund request form</strong></li>
-          <li>Our support team will review your request and respond within <strong>3 business days</strong></li>
-        </ol>
-
-        <hr class="my-6 border-gray-200 dark:border-gray-700" />
-
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.3 Refund Processing</h2>
-        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-          All refunds are processed by <strong>Paddle</strong>, our Merchant of Record. If your refund request is approved by Axiora:
-        </p>
-        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-4 space-y-2">
-          <li>Axiora will instruct Paddle to issue the refund to your <strong>original payment method</strong> in <strong>USD</strong></li>
-          <li>Paddle's processing time is typically up to <strong>5 business days</strong> from the approval date, though your card issuer or bank may take additional time to reflect the credit</li>
-          <li>The refund amount will match the original purchase amount; no fees are deducted by Axiora</li>
+        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-6 space-y-2">
+          <li>Approved refunds are returned to your <strong>original payment method</strong> in <strong>USD</strong></li>
+          <li>Processing time is typically up to <strong>5 business days</strong> from approval, though your card issuer or bank may take additional time to reflect the credit</li>
+          <li>No fees are deducted by Axiora</li>
         </ul>
-        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-          Paddle's refund handling is subject to Paddle's own policies. In rare cases, Paddle may apply their own refund conditions as the legal Merchant of Record.
-        </p>
 
         <hr class="my-6 border-gray-200 dark:border-gray-700" />
 
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.4 Plan Downgrades (Business to Pro)</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.3 Plan Downgrades (Business to Pro)</h2>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-          If you are subscribed to the <strong>Business plan</strong> and wish to switch to the <strong>Pro plan</strong>, the following applies instead of a standard refund:
+          If you are on the <strong>Business plan</strong> and wish to move to the <strong>Pro plan</strong>, we offer a goodwill downgrade option at our discretion. If granted:
         </p>
         <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-4 space-y-2">
-          <li>You may request a downgrade to the Pro plan <strong>within 7 days</strong> of your Business plan purchase</li>
-          <li>No more than <strong>20% of your Business plan token quota</strong> may have been consumed at the time of the request</li>
-          <li>If approved, you will be granted the <strong>Pro plan starting from the same purchase date</strong> as your Business plan</li>
+          <li>You will be moved to the Pro plan with the <strong>same start date</strong> as your Business plan purchase</li>
           <li>Your consumed tokens will be recalculated against the Pro plan's quota</li>
         </ul>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-          This downgrade option is available once per subscription period and is subject to support approval.
+          To inquire about a downgrade, contact us at <strong>support@axiora.software</strong>. This is a discretionary accommodation and not a guaranteed entitlement.
         </p>
 
         <hr class="my-6 border-gray-200 dark:border-gray-700" />
 
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.5 Non-Refundable Situations</h2>
-        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-          Refunds will not be issued in the following cases:
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.4 Account Access Upon Refund</h2>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          Upon a confirmed refund, your account access and remaining token quota will be revoked. Accounts that obtain a refund may not be eligible to create a new Axiora account using the same email address.
         </p>
-        <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-6 space-y-2">
-          <li>More than 10% of the token quota has been consumed</li>
-          <li>The request is submitted more than 5 calendar days after purchase</li>
-          <li>The refund request was not initiated by contacting support first</li>
-          <li>Account termination due to a violation of the Terms of Service</li>
-        </ul>
 
         <hr class="my-6 border-gray-200 dark:border-gray-700" />
 
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.6 Contact for Refund Requests</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3.5 Contact for Refund Requests</h2>
         <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 leading-relaxed mb-6 space-y-1">
           <li><strong>Support Email:</strong> support@axiora.software</li>
           <li><strong>General Contact:</strong> contact@axiora.software</li>
